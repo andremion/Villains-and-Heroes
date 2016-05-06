@@ -10,9 +10,9 @@ import okhttp3.Response;
 public class AuthenticatorInterceptor implements Interceptor {
 
     // TODO: Put your private key here
-    private static final String PRIVATE_KEY = "0980acd08f14d1143ef60e0bd02a0cdf87ec45f2";
+    private static final String PRIVATE_KEY = "###";
     // TODO: Put your public key here
-    private static final String PUBLIC_KEY = "6862c876658e08ba941c8c6399933535";
+    private static final String PUBLIC_KEY = "###";
 
     private static final String QUERY_NAME_TIMESTAMP = "ts";
     private static final String QUERY_NAME_APIKEY = "apikey";
