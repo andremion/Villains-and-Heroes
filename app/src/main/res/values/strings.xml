@@ -1,0 +1,28 @@
+<resources>
+    <!--Data-->
+    <string name="data_provider_authority" translatable="false">com.andremion.heroes.data.provider</string>
+    <!--Sync-->
+    <string name="sync_account_type" translatable="false">heroes.andremion.com</string>
+    <string name="fetching_data">Fetching data…</string>
+    <string name="connection_info">This app fetches data from a remote server. Check your Internet connection and try again.</string>
+    <string name="connection_error">Oops! Something went wrong. Check your Internet connection and try again.</string>
+    <string name="server_error">Oops! Server went wrong. We will try again later.</string>
+    <!--General-->
+    <string name="app_name">Villains &amp; Heroes</string>
+    <string name="transition_character_image" translatable="false">transition_character_image</string>
+    <string name="transition_section_image" translatable="false">transition_section_image</string>
+    <string name="unavailable_data">Unavailable data</string>
+    <!--Character-->
+    <string name="label_description">Description</string>
+    <string name="label_comics">Comics</string>
+    <string name="label_series">Series</string>
+    <string name="label_stories">Stories</string>
+    <string name="label_events">Events</string>
+    <string name="label_related_links">Related links</string>
+    <string name="link_detail">Detail</string>
+    <string name="link_wiki">Wiki</string>
+    <string name="link_comic">Comiclink</string>
+    <!--Search-->
+    <string name="action_search">Search</string>
+    <string name="search_hint">Search…</string>
+</resources>

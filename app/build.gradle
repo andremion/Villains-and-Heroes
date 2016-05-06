@@ -1,0 +1,41 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        applicationId "com.andremion.heroes"
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 2
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+final APPCOMPAT_VERSION = '23.3.0'
+final RETROFIT_VERSION = '2.0.1'
+
+dependencies {
+    compile "com.android.support:design:$APPCOMPAT_VERSION"
+    compile "com.android.support:recyclerview-v7:$APPCOMPAT_VERSION"
+    compile "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
+    compile "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
+    compile 'com.github.bumptech.glide:glide:3.6.1'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    androidTestCompile "com.android.support:support-annotations:$APPCOMPAT_VERSION"
+    androidTestCompile "com.android.support.test:rules:0.5"
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+    }
+}
