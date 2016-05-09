@@ -67,6 +67,7 @@ public class DataParser {
                 result.setEntries(characterList);
             }
         }
+        result.setAttribution(dataWrapper.attributionText);
         return result;
     }
 
@@ -89,6 +90,7 @@ public class DataParser {
                 result.setEntries(comicList);
             }
         }
+        result.setAttribution(dataWrapper.attributionText);
         return result;
     }
 
@@ -111,6 +113,7 @@ public class DataParser {
                 result.setEntries(seriesList);
             }
         }
+        result.setAttribution(dataWrapper.attributionText);
         return result;
     }
 

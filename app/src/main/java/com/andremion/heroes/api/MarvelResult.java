@@ -9,10 +9,12 @@ public class MarvelResult<T> {
 
     private int mTotal;
     private List<T> mEntries;
+    private String mAttribution;
 
     public MarvelResult() {
         mTotal = 0;
         mEntries = new ArrayList<>();
+        mAttribution = "";
     }
 
     public int getTotal() {
@@ -33,5 +35,13 @@ public class MarvelResult<T> {
 
     public void setEntries(@NonNull List<T> entries) {
         mEntries = entries;
+    }
+
+    public String getAttribution() {
+        return mAttribution;
+    }
+
+    public void setAttribution(String attribution) {
+        mAttribution = attribution;
     }
 }

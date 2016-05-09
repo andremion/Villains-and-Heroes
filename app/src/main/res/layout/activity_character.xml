@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -147,6 +148,18 @@
                     android:visibility="gone" />
 
             </LinearLayout>
+
+            <!--Attribution-->
+
+            <TextView
+                android:id="@+id/attribution"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/text_margin"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                tools:text="Data provided by Marvel. © 2014 Marvel" />
 
         </LinearLayout>
 

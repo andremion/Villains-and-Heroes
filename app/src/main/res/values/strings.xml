@@ -4,7 +4,7 @@
     <!--Sync-->
     <string name="sync_account_type" translatable="false">heroes.andremion.com</string>
     <string name="fetching_data">Fetching data…</string>
-    <string name="connection_info">This app fetches data from a remote server. Check your Internet connection and try again.</string>
+    <string name="connection_info">This app fetches data provided by Marvel server. Check your Internet connection and try again.</string>
     <string name="connection_error">Oops! Something went wrong. Check your Internet connection and try again.</string>
     <string name="server_error">Oops! Server went wrong. We will try again later.</string>
     <!--General-->

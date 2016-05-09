@@ -41,6 +41,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public static final String EXTRA_SYNCING = SyncAdapter.class.getPackage().getName() + ".extra.SYNCING";
     public static final String EXTRA_ERROR = SyncAdapter.class.getPackage().getName() + ".extra.ERROR";
     public static final String KEY_SYNCING = SyncAdapter.class.getSimpleName() + ".SYNCING";
+    public static final String KEY_ATTRIBUTION = SyncAdapter.class.getSimpleName() + ".ATTRIBUTION";
 
     private static final String LOG_TAG = SyncAdapter.class.getSimpleName();
 
@@ -97,7 +98,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 entryManager.sync(new EntryManager.FetchInterface<ComicVO>() {
                     @Override
                     public MarvelResult<ComicVO> onFetchEntries(int offset) throws IOException, MarvelException {
-                        return mMarvelApi.listComics(characterId, offset);
+                        MarvelResult<ComicVO> result = mMarvelApi.listComics(characterId, offset);
+                        updateAttributionText(result.getAttribution());
+                        return result;
                     }
 
                     @Override
@@ -116,7 +119,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 entryManager.sync(new EntryManager.FetchInterface<SeriesVO>() {
                     @Override
                     public MarvelResult<SeriesVO> onFetchEntries(int offset) throws IOException, MarvelException {
-                        return mMarvelApi.listSeries(characterId, offset);
+                        MarvelResult<SeriesVO> result = mMarvelApi.listSeries(characterId, offset);
+                        updateAttributionText(result.getAttribution());
+                        return result;
                     }
 
                     @Override
@@ -137,7 +142,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 entryManager.sync(new EntryManager.FetchInterface<CharacterVO>() {
                     @Override
                     public MarvelResult<CharacterVO> onFetchEntries(int offset) throws IOException, MarvelException {
-                        return mMarvelApi.listCharacters(offset);
+                        MarvelResult<CharacterVO> result = mMarvelApi.listCharacters(offset);
+                        updateAttributionText(result.getAttribution());
+                        return result;
                     }
 
                     @Override
@@ -248,6 +255,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         if (skipped > 0) {
             Log.w(LOG_TAG, skipped + " Series skipped");
             syncStats.numSkippedEntries += skipped;
+        }
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    private void updateAttributionText(String attribution) {
+        String current = mPrefs.getString(KEY_ATTRIBUTION, null);
+        if (current == null || !current.equals(attribution)) {
+            mPrefs.edit().putString(KEY_ATTRIBUTION, attribution).commit();
         }
     }
 

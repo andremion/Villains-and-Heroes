@@ -1,9 +1,11 @@
 package com.andremion.heroes.ui.character;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 import com.andremion.heroes.R;
 import com.andremion.heroes.data.DataContract.Character;
 import com.andremion.heroes.data.DataContract.Section;
+import com.andremion.heroes.sync.service.SyncAdapter;
 import com.andremion.heroes.sync.util.SyncHelper;
 import com.andremion.heroes.ui.adapter.CursorAdapter;
 import com.andremion.heroes.ui.search.SearchActivity;
@@ -36,17 +39,22 @@ public class CharacterActivity extends AppCompatActivity implements
 
     public static final String EXTRA_ID = CharacterActivity.class.getPackage().getName() + ".extra." + Character._ID;
 
+    private SharedPreferences mPrefs;
+
     private CollapsingToolbarLayout mToolbarLayout;
     private ImageView mImageView;
     private TextView mDescriptionView;
     private TextView mDetailView;
     private TextView mWikiView;
     private TextView mComicLinkView;
+    private TextView mAttributionView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character);
+
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,6 +67,7 @@ public class CharacterActivity extends AppCompatActivity implements
         mDetailView = (TextView) findViewById(R.id.link_detail);
         mWikiView = (TextView) findViewById(R.id.link_wiki);
         mComicLinkView = (TextView) findViewById(R.id.link_comiclink);
+        mAttributionView = (TextView) findViewById(R.id.attribution);
 
         long characterId = getIntent().getExtras().getLong(EXTRA_ID);
 
@@ -156,7 +165,9 @@ public class CharacterActivity extends AppCompatActivity implements
             mComicLinkView.setVisibility(View.GONE);
         }
 
-        supportStartPostponedEnterTransition();
+        // Set the attribution text
+        //noinspection ConstantConditions
+        mAttributionView.setText(mPrefs.getString(SyncAdapter.KEY_ATTRIBUTION, null));
     }
 
     @Override

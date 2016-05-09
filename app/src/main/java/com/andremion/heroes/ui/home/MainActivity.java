@@ -21,6 +21,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -70,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mBroadcastManager = LocalBroadcastManager.getInstance(this);
@@ -130,6 +134,10 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        // Set the attribution text
+        //noinspection ConstantConditions
+        getSupportActionBar().setSubtitle(mPrefs.getString(SyncAdapter.KEY_ATTRIBUTION, null));
 
         // Add empty row to 'load more' feature
         if (data != null) {
