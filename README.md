@@ -3,7 +3,7 @@
 
 Android app using [Marvel Comics API](https://developer.marvel.com) that allows developers everywhere to access information about Marvel's vast library of comics
 
-![Home](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/home-github.png)![Search](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/search-github.png)
+![Home](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/home-github.png)![Search](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/search-github.png)![Detail](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/detail-github.png)
 
 ## Credentials
 
