@@ -18,9 +18,22 @@
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/AppTheme.AppBarOverlay"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Caption" />
+            app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Caption"/>
 
     </android.support.design.widget.AppBarLayout>
+
+    <TextView
+        android:id="@+id/error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:drawablePadding="@dimen/activity_vertical_margin"
+        android:drawableTop="@drawable/ic_sentiment_dissatisfied_white_48dp"
+        android:gravity="center"
+        android:visibility="invisible"
+        tools:text="@string/connection_error"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/characters"
@@ -28,6 +41,6 @@
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/item_list_character" />
+        tools:listitem="@layout/item_list_character"/>
 
 </android.support.design.widget.CoordinatorLayout>
