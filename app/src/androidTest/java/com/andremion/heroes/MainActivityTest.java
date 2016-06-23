@@ -32,18 +32,18 @@ public class MainActivityTest {
     @Test
     public void testExpectedItem() {
         // Check if the list is displayed
-        onView(withId(R.id.characters)).check(matches(isDisplayed()));
+        onView(withId(R.id.recycler)).check(matches(isDisplayed()));
         // Check if there is one View item with expected value
         //noinspection unchecked
-        onView(allOf(isDescendantOfA(withId(R.id.characters)), withText(is(DataConstants.CHARACTER_NAME))));
+        onView(allOf(isDescendantOfA(withId(R.id.recycler)), withText(is(DataConstants.CHARACTER_NAME))));
     }
 
     @Test
     public void testListItemClick() {
         // Check if the list is displayed
-        onView(withId(R.id.characters)).check(matches(isDisplayed()));
+        onView(withId(R.id.recycler)).check(matches(isDisplayed()));
         // Perform click on first item
-        onView(withId(R.id.characters)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.recycler)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
 
     @Test

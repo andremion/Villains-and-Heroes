@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
@@ -21,19 +22,17 @@ import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.andremion.heroes.R;
 import com.andremion.heroes.api.MarvelApi;
 import com.andremion.heroes.api.MarvelException;
 import com.andremion.heroes.data.DataContract;
+import com.andremion.heroes.databinding.ActivityMainBinding;
 import com.andremion.heroes.sync.service.SyncAdapter;
 import com.andremion.heroes.sync.util.EntryManager;
 import com.andremion.heroes.sync.util.SyncHelper;
@@ -51,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final String OFFSET = "offset";
     private static final String KEY_INITIAL_INFO = MainActivity.class.getSimpleName() + ".INITIAL_INFO";
     private static final int FETCH_LIMIT = MarvelApi.MAX_FETCH_LIMIT;
+
     private final BroadcastReceiver mSyncReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -66,18 +66,18 @@ public class MainActivity extends AppCompatActivity implements
                 boolean showError = !TextUtils.isEmpty(msg) && mCharacterAdapter.getItemCount() <= 1;
 
                 // Cancel any on-going animation
-                ViewCompat.animate(mErrorView).cancel();
-                ViewCompat.animate(mRecyclerView).cancel();
+                ViewCompat.animate(mBinding.error).cancel();
+                ViewCompat.animate(mBinding.recycler).cancel();
 
                 if (showError) {
                     Log.d(LOG_TAG, msg);
 
-                    mErrorView.setText(msg);
-                    mErrorView.setVisibility(View.VISIBLE);
+                    mBinding.error.setText(msg);
+                    mBinding.error.setVisibility(View.VISIBLE);
 
-                    ViewCompat.setAlpha(mErrorView, 0f);
-                    ViewCompat.animate(mErrorView).alpha(1f).start();
-                    ViewCompat.animate(mRecyclerView)
+                    ViewCompat.setAlpha(mBinding.error, 0f);
+                    ViewCompat.animate(mBinding.error).alpha(1f).start();
+                    ViewCompat.animate(mBinding.recycler)
                             .alpha(0f)
                             .setListener(new ViewPropertyAnimatorListenerAdapter() {
                                 @Override
@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity implements
                                 }
                             }).start();
                 } else {
-                    mRecyclerView.setVisibility(View.VISIBLE);
+                    mBinding.recycler.setVisibility(View.VISIBLE);
 
-                    ViewCompat.animate(mErrorView)
+                    ViewCompat.animate(mBinding.error)
                             .alpha(0f)
                             .setListener(new ViewPropertyAnimatorListenerAdapter() {
                                 @Override
@@ -96,31 +96,26 @@ public class MainActivity extends AppCompatActivity implements
                                     view.setVisibility(View.INVISIBLE);
                                 }
                             }).start();
-                    ViewCompat.setAlpha(mRecyclerView, 0f);
-                    ViewCompat.animate(mRecyclerView).alpha(1f).start();
+                    ViewCompat.setAlpha(mBinding.recycler, 0f);
+                    ViewCompat.animate(mBinding.recycler).alpha(1f).start();
                 }
             }
         }
     };
+
     private SharedPreferences mPrefs;
     private LocalBroadcastManager mBroadcastManager;
-    private TextView mErrorView;
-    private RecyclerView mRecyclerView;
     private CharacterAdapter mCharacterAdapter;
+    private ActivityMainBinding mBinding;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        mErrorView = (TextView) findViewById(R.id.empty);
-        mRecyclerView = (RecyclerView) findViewById(R.id.characters);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setSupportActionBar(mBinding.toolbar);
 
         mCharacterAdapter = new CharacterAdapter(this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mCharacterAdapter);
+        mBinding.recycler.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.recycler.setAdapter(mCharacterAdapter);
 
         mBroadcastManager = LocalBroadcastManager.getInstance(this);
         mBroadcastManager.registerReceiver(mSyncReceiver, new IntentFilter(SyncAdapter.ACTION_SYNC_STATUS));
