@@ -20,9 +20,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.andremion.heroes.BR;
 import com.andremion.heroes.R;
 import com.andremion.heroes.data.DataContract.Character;
 import com.andremion.heroes.data.DataContract.Section;
+import com.andremion.heroes.data.binding.CharacterWrapper;
 import com.andremion.heroes.databinding.ActivityCharacterBinding;
 import com.andremion.heroes.sync.service.SyncAdapter;
 import com.andremion.heroes.sync.util.SyncHelper;
@@ -114,6 +116,7 @@ public class CharacterActivity extends AppCompatActivity implements
         String wiki = data.getString(data.getColumnIndex(Character.COLUMN_WIKI));
         String comiclink = data.getString(data.getColumnIndex(Character.COLUMN_COMIC_LINK));
 
+        mBinding.setVariable(BR.character, CharacterWrapper.wrap(data));
         mBinding.toolbarLayout.setTitle(name);
         Glide.with(this)
                 .load(image)
@@ -151,6 +154,8 @@ public class CharacterActivity extends AppCompatActivity implements
         // Set the attribution text
         //noinspection ConstantConditions
         mBinding.attribution.setText(mPrefs.getString(SyncAdapter.KEY_ATTRIBUTION, null));
+
+        mBinding.executePendingBindings();
     }
 
     @Override

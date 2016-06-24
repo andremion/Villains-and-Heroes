@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements
 
         mCharacterAdapter = new CharacterAdapter(this);
         mBinding.recycler.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.recycler.setHasFixedSize(true);
         mBinding.recycler.setAdapter(mCharacterAdapter);
 
         mBroadcastManager = LocalBroadcastManager.getInstance(this);

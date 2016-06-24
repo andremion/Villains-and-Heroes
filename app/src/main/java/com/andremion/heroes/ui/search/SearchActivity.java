@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -15,15 +16,14 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.andremion.heroes.R;
 import com.andremion.heroes.api.MarvelApi;
 import com.andremion.heroes.data.DataContract.Character;
+import com.andremion.heroes.databinding.ActivitySearchBinding;
 import com.andremion.heroes.ui.adapter.CursorAdapter;
 import com.andremion.heroes.ui.character.CharacterActivity;
 import com.andremion.heroes.ui.search.adapter.SearchAdapter;
@@ -33,32 +33,26 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
 
     private static final String ARG_QUERY = "query";
 
-    private SearchView mSearchView;
+    private ActivitySearchBinding mBinding;
     private SearchAdapter mSearchAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_search);
+        setSupportActionBar(mBinding.toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mSearchView = (SearchView) findViewById(R.id.search);
-        assert mSearchView != null;
-        mSearchView.setIconified(false);
-        mSearchView.setOnQueryTextListener(this);
-        mSearchView.setOnCloseListener(this);
+        mBinding.search.setIconified(false);
+        mBinding.search.setOnQueryTextListener(this);
+        mBinding.search.setOnCloseListener(this);
         onClose();
 
         mSearchAdapter = new SearchAdapter(this);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.characters);
-        assert recyclerView != null;
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(mSearchAdapter);
+        mBinding.recycler.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.recycler.setHasFixedSize(true);
+        mBinding.recycler.setAdapter(mSearchAdapter);
     }
 
     @Override
@@ -77,7 +71,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     @Override
     public boolean onClose() {
         Bundle args = new Bundle();
-        args.putString(ARG_QUERY, mSearchView.getQuery().toString());
+        args.putString(ARG_QUERY, mBinding.search.getQuery().toString());
         getSupportLoaderManager().restartLoader(0, args, this);
         return true;
     }

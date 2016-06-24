@@ -1,17 +1,16 @@
 package com.andremion.heroes.ui.home.adapter;
 
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.andremion.heroes.BR;
 import com.andremion.heroes.R;
 import com.andremion.heroes.data.DataContract.Character;
+import com.andremion.heroes.data.binding.CharacterWrapper;
 import com.andremion.heroes.ui.adapter.CursorAdapter;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 
 public class CharacterAdapter extends CursorAdapter<CharacterAdapter.ViewHolder> {
 
@@ -28,8 +27,9 @@ public class CharacterAdapter extends CursorAdapter<CharacterAdapter.ViewHolder>
         if (viewType == VIEW_TYPE_MORE) {
             layout = R.layout.item_list_more;
         }
-        View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-        return new ViewHolder(view);
+        ViewDataBinding binding = DataBindingUtil.inflate(
+                LayoutInflater.from(parent.getContext()), layout, parent, false);
+        return new ViewHolder(binding);
     }
 
     @Override
@@ -44,15 +44,8 @@ public class CharacterAdapter extends CursorAdapter<CharacterAdapter.ViewHolder>
         }
 
         Cursor data = getItem(position);
-        String name = data.getString(data.getColumnIndex(Character.COLUMN_NAME));
-        String image = data.getString(data.getColumnIndex(Character.COLUMN_IMAGE));
-
-        holder.mNameView.setText(name);
-        Glide.with(holder.mView.getContext())
-                .load(image)
-                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                .error(R.mipmap.ic_launcher)
-                .into(holder.mImageView);
+        holder.mBinding.setVariable(BR.character, CharacterWrapper.wrap(data));
+        holder.mBinding.executePendingBindings();
     }
 
     @Override
@@ -70,13 +63,11 @@ public class CharacterAdapter extends CursorAdapter<CharacterAdapter.ViewHolder>
 
     public class ViewHolder extends CursorAdapter.ViewHolder {
 
-        public final TextView mNameView;
-        public final ImageView mImageView;
+        public final ViewDataBinding mBinding;
 
-        public ViewHolder(View view) {
-            super(view);
-            mNameView = (TextView) view.findViewById(R.id.name);
-            mImageView = (ImageView) view.findViewById(R.id.image);
+        public ViewHolder(ViewDataBinding binding) {
+            super(binding.getRoot());
+            mBinding = binding;
         }
     }
 }
