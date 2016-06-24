@@ -3,10 +3,10 @@ package com.andremion.heroes.ui.character;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -15,17 +15,15 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.andremion.heroes.R;
 import com.andremion.heroes.data.DataContract.Character;
 import com.andremion.heroes.data.DataContract.Section;
+import com.andremion.heroes.databinding.ActivityCharacterBinding;
 import com.andremion.heroes.sync.service.SyncAdapter;
 import com.andremion.heroes.sync.util.SyncHelper;
 import com.andremion.heroes.ui.adapter.CursorAdapter;
@@ -41,33 +39,18 @@ public class CharacterActivity extends AppCompatActivity implements
 
     private SharedPreferences mPrefs;
 
-    private CollapsingToolbarLayout mToolbarLayout;
-    private ImageView mImageView;
-    private TextView mDescriptionView;
-    private TextView mDetailView;
-    private TextView mWikiView;
-    private TextView mComicLinkView;
-    private TextView mAttributionView;
+    private ActivityCharacterBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character);
-
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_character);
+        setSupportActionBar(mBinding.toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        mImageView = (ImageView) findViewById(R.id.image);
-        mDescriptionView = (TextView) findViewById(R.id.description);
-        mDetailView = (TextView) findViewById(R.id.link_detail);
-        mWikiView = (TextView) findViewById(R.id.link_wiki);
-        mComicLinkView = (TextView) findViewById(R.id.link_comiclink);
-        mAttributionView = (TextView) findViewById(R.id.attribution);
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         long characterId = getIntent().getExtras().getLong(EXTRA_ID);
 
@@ -131,43 +114,43 @@ public class CharacterActivity extends AppCompatActivity implements
         String wiki = data.getString(data.getColumnIndex(Character.COLUMN_WIKI));
         String comiclink = data.getString(data.getColumnIndex(Character.COLUMN_COMIC_LINK));
 
-        mToolbarLayout.setTitle(name);
+        mBinding.toolbarLayout.setTitle(name);
         Glide.with(this)
                 .load(image)
                 .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                 .error(R.mipmap.ic_launcher)
-                .into(mImageView);
+                .into(mBinding.image);
 
         if (!TextUtils.isEmpty(description)) {
-            mDescriptionView.setText(description);
+            mBinding.description.setText(description);
         } else {
-            mDescriptionView.setText(R.string.unavailable_data);
+            mBinding.description.setText(R.string.unavailable_data);
         }
 
         if (!TextUtils.isEmpty(detail)) {
-            mDetailView.setTag(detail);
-            mDetailView.setVisibility(View.VISIBLE);
+            mBinding.linkDetail.setTag(detail);
+            mBinding.linkDetail.setVisibility(View.VISIBLE);
         } else {
-            mDetailView.setVisibility(View.GONE);
+            mBinding.linkDetail.setVisibility(View.GONE);
         }
 
         if (!TextUtils.isEmpty(wiki)) {
-            mWikiView.setTag(wiki);
-            mWikiView.setVisibility(View.VISIBLE);
+            mBinding.linkWiki.setTag(wiki);
+            mBinding.linkWiki.setVisibility(View.VISIBLE);
         } else {
-            mWikiView.setVisibility(View.GONE);
+            mBinding.linkWiki.setVisibility(View.GONE);
         }
 
         if (!TextUtils.isEmpty(comiclink)) {
-            mComicLinkView.setTag(comiclink);
-            mComicLinkView.setVisibility(View.VISIBLE);
+            mBinding.linkComiclink.setTag(comiclink);
+            mBinding.linkComiclink.setVisibility(View.VISIBLE);
         } else {
-            mComicLinkView.setVisibility(View.GONE);
+            mBinding.linkComiclink.setVisibility(View.GONE);
         }
 
         // Set the attribution text
         //noinspection ConstantConditions
-        mAttributionView.setText(mPrefs.getString(SyncAdapter.KEY_ATTRIBUTION, null));
+        mBinding.attribution.setText(mPrefs.getString(SyncAdapter.KEY_ATTRIBUTION, null));
     }
 
     @Override
