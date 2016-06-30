@@ -6,11 +6,15 @@
 
     <data>
 
-        <import type="com.andremion.heroes.data.binding.CharacterWrapper"/>
+        <import type="android.view.View"/>
 
         <variable
             name="character"
-            type="CharacterWrapper"/>
+            type="com.andremion.heroes.ui.binding.CharacterWrapper"/>
+
+        <variable
+            name="attribution"
+            type="java.lang.String"/>
 
     </data>
 
@@ -32,10 +36,10 @@
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
                 app:expandedTitleTextAppearance="@style/TextAppearance.Character.Name"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:title="@{character.name}">
 
                 <ImageView
-                    android:id="@+id/image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
@@ -86,9 +90,10 @@
                     android:layout_marginBottom="@dimen/text_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:text="@string/unavailable_data"
+                    android:text="@{!character.description.empty ? character.description : @string/unavailable_data}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textIsSelectable="true"/>
+                    android:textIsSelectable="true"
+                    tools:text="@string/unavailable_data"/>
 
                 <!--Sections-->
 
@@ -119,7 +124,6 @@
                     android:showDividers="middle">
 
                     <TextView
-                        android:id="@+id/link_detail"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/listPreferredItemHeight"
                         android:background="?attr/selectableItemBackground"
@@ -127,13 +131,13 @@
                         android:onClick="onLinkClick"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:tag="@{character.detail}"
                         android:text="@string/link_detail"
                         android:textAllCaps="true"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        android:visibility="gone"/>
+                        android:visibility="@{character.detail != null ? View.VISIBLE : View.GONE}"/>
 
                     <TextView
-                        android:id="@+id/link_wiki"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/listPreferredItemHeight"
                         android:background="?attr/selectableItemBackground"
@@ -141,13 +145,13 @@
                         android:onClick="onLinkClick"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:tag="@{character.wiki}"
                         android:text="@string/link_wiki"
                         android:textAllCaps="true"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        android:visibility="gone"/>
+                        android:visibility="@{character.wiki != null ? View.VISIBLE : View.GONE}"/>
 
                     <TextView
-                        android:id="@+id/link_comiclink"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/listPreferredItemHeight"
                         android:background="?attr/selectableItemBackground"
@@ -155,22 +159,23 @@
                         android:onClick="onLinkClick"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:tag="@{character.comicLink}"
                         android:text="@string/link_comic"
                         android:textAllCaps="true"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        android:visibility="gone"/>
+                        android:visibility="@{character.comicLink != null ? View.VISIBLE : View.GONE}"/>
 
                 </LinearLayout>
 
                 <!--Attribution-->
 
                 <TextView
-                    android:id="@+id/attribution"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/text_margin"
+                    android:text="@{attribution}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                     tools:text="Data provided by Marvel. © 2014 Marvel"/>
 

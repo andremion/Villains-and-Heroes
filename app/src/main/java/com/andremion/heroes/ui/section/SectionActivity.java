@@ -2,6 +2,7 @@ package com.andremion.heroes.ui.section;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
@@ -9,11 +10,10 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.TextView;
 
 import com.andremion.heroes.R;
 import com.andremion.heroes.data.DataContract.Section;
+import com.andremion.heroes.databinding.ActivitySectionBinding;
 import com.andremion.heroes.sync.service.SyncAdapter;
 import com.andremion.heroes.ui.section.adapter.SectionPagerAdapter;
 
@@ -30,12 +30,12 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
     private long mCharacter;
     private int mPosition;
     private ViewPager mViewPager;
-    private TextView mAttributionView;
+    private ActivitySectionBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_section);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_section);
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -43,16 +43,7 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
         mCharacter = getIntent().getExtras().getLong(EXTRA_CHARACTER);
         mPosition = getIntent().getExtras().getInt(EXTRA_POSITION);
 
-        View closeButton = findViewById(R.id.close);
-        assert closeButton != null;
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                supportFinishAfterTransition();
-            }
-        });
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mAttributionView = (TextView) findViewById(R.id.attribution);
 
         getSupportLoaderManager().initLoader(0, null, this);
     }
@@ -71,14 +62,15 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mViewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager(), mType, data));
         mViewPager.setCurrentItem(mPosition, false);
-
-        // Set the attribution text
-        //noinspection ConstantConditions
-        mAttributionView.setText(mPrefs.getString(SyncAdapter.KEY_ATTRIBUTION, null));
+        mBinding.setAttribution(mPrefs.getString(SyncAdapter.KEY_ATTRIBUTION, null));
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+    }
+
+    public void onCloseClick(){
+        supportFinishAfterTransition();
     }
 
 }

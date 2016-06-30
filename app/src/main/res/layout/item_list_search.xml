@@ -6,11 +6,9 @@
 
     <data>
 
-        <import type="com.andremion.heroes.data.binding.SearchWrapper"/>
-
         <variable
             name="search"
-            type="SearchWrapper"/>
+            type="com.andremion.heroes.ui.binding.SearchWrapper"/>
 
     </data>
 
@@ -34,7 +32,6 @@
                 tools:src="@mipmap/ic_launcher"/>
 
             <TextView
-                android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/text_margin"

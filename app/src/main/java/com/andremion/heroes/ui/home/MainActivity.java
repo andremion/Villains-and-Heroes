@@ -23,7 +23,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +32,7 @@ import com.andremion.heroes.api.MarvelApi;
 import com.andremion.heroes.api.MarvelException;
 import com.andremion.heroes.data.DataContract;
 import com.andremion.heroes.databinding.ActivityMainBinding;
+import com.andremion.heroes.databinding.ItemListCharacterBinding;
 import com.andremion.heroes.sync.service.SyncAdapter;
 import com.andremion.heroes.sync.util.EntryManager;
 import com.andremion.heroes.sync.util.SyncHelper;
@@ -46,7 +46,6 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, CharacterAdapter.OnCharacterAdapterInteractionListener {
 
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String OFFSET = "offset";
     private static final String KEY_INITIAL_INFO = MainActivity.class.getSimpleName() + ".INITIAL_INFO";
     private static final int FETCH_LIMIT = MarvelApi.MAX_FETCH_LIMIT;
@@ -56,13 +55,16 @@ public class MainActivity extends AppCompatActivity implements
         public void onReceive(Context context, Intent intent) {
             if (intent.hasExtra(SyncAdapter.EXTRA_ERROR)) {
                 Exception error = (Exception) intent.getExtras().get(SyncAdapter.EXTRA_ERROR);
-                String msg = null;
+                final String msg;
                 if (error instanceof IOException) {
                     msg = getString(R.string.connection_error);
                 } else if (error instanceof MarvelException) {
                     msg = getString(R.string.server_error);
+                } else {
+                    msg = "";
                 }
 
+                boolean animate = !TextUtils.equals(mBinding.error.getText(), msg);
                 boolean showError = !TextUtils.isEmpty(msg) && mCharacterAdapter.getItemCount() <= 1;
 
                 // Cancel any on-going animation
@@ -70,34 +72,43 @@ public class MainActivity extends AppCompatActivity implements
                 ViewCompat.animate(mBinding.recycler).cancel();
 
                 if (showError) {
-                    Log.d(LOG_TAG, msg);
-
                     mBinding.error.setText(msg);
                     mBinding.error.setVisibility(View.VISIBLE);
 
-                    ViewCompat.setAlpha(mBinding.error, 0f);
-                    ViewCompat.animate(mBinding.error).alpha(1f).start();
-                    ViewCompat.animate(mBinding.recycler)
-                            .alpha(0f)
-                            .setListener(new ViewPropertyAnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(View view) {
-                                    view.setVisibility(View.INVISIBLE);
-                                }
-                            }).start();
+                    if (animate) {
+                        ViewCompat.setAlpha(mBinding.error, 0f);
+                        ViewCompat.animate(mBinding.error).alpha(1f).start();
+                        ViewCompat.animate(mBinding.recycler)
+                                .alpha(0f)
+                                .setListener(new ViewPropertyAnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(View view) {
+                                        view.setVisibility(View.INVISIBLE);
+                                    }
+                                }).start();
+                    } else {
+                        ViewCompat.setAlpha(mBinding.error, 1f);
+                        ViewCompat.setAlpha(mBinding.recycler, 0f);
+                    }
                 } else {
-                    mBinding.recycler.setVisibility(View.VISIBLE);
-
-                    ViewCompat.animate(mBinding.error)
-                            .alpha(0f)
-                            .setListener(new ViewPropertyAnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(View view) {
-                                    view.setVisibility(View.INVISIBLE);
-                                }
-                            }).start();
-                    ViewCompat.setAlpha(mBinding.recycler, 0f);
-                    ViewCompat.animate(mBinding.recycler).alpha(1f).start();
+                    if (mBinding.error.getVisibility() == View.VISIBLE) {
+                        if (animate) {
+                            ViewCompat.setAlpha(mBinding.recycler, 0f);
+                            ViewCompat.animate(mBinding.recycler).alpha(1f).start();
+                            ViewCompat.animate(mBinding.error)
+                                    .alpha(0f)
+                                    .setListener(new ViewPropertyAnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationEnd(View view) {
+                                            mBinding.error.setText(msg);
+                                            view.setVisibility(View.INVISIBLE);
+                                        }
+                                    }).start();
+                        } else {
+                            mBinding.error.setText(msg);
+                            mBinding.error.setVisibility(View.INVISIBLE);
+                        }
+                    }
                 }
             }
         }
@@ -202,14 +213,13 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onItemClick(CursorAdapter adapter, View view, int position) {
+    public void onItemClick(CursorAdapter adapter, ItemListCharacterBinding binding, int position) {
 
         Cursor data = adapter.getItem(position);
-        View imageView = view.findViewById(R.id.image);
 
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(MainActivity.this,
-                        imageView, ViewCompat.getTransitionName(imageView));
+                        binding.image, ViewCompat.getTransitionName(binding.image));
         Intent intent = new Intent(this, CharacterActivity.class);
         intent.putExtra(CharacterActivity.EXTRA_ID, data.getLong(data.getColumnIndex(DataContract.Character._ID)));
 

@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import com.andremion.heroes.BR;
 import com.andremion.heroes.R;
 import com.andremion.heroes.data.DataContract.Character;
-import com.andremion.heroes.data.binding.CharacterWrapper;
+import com.andremion.heroes.databinding.ItemListCharacterBinding;
+import com.andremion.heroes.ui.binding.CharacterWrapper;
 import com.andremion.heroes.ui.adapter.CursorAdapter;
 
 public class CharacterAdapter extends CursorAdapter<CharacterAdapter.ViewHolder> {
@@ -33,7 +34,7 @@ public class CharacterAdapter extends CursorAdapter<CharacterAdapter.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
 
         if (holder.getItemViewType() == VIEW_TYPE_MORE) {
             CursorAdapter.OnAdapterInteractionListener listener = getItemClickListener();
@@ -57,17 +58,15 @@ public class CharacterAdapter extends CursorAdapter<CharacterAdapter.ViewHolder>
         return VIEW_TYPE_DEFAULT;
     }
 
-    public interface OnCharacterAdapterInteractionListener extends CursorAdapter.OnAdapterInteractionListener {
+    public interface OnCharacterAdapterInteractionListener
+            extends CursorAdapter.OnAdapterInteractionListener<ItemListCharacterBinding> {
         void onLoadMoreItems(int offset);
     }
 
     public class ViewHolder extends CursorAdapter.ViewHolder {
-
-        public final ViewDataBinding mBinding;
-
         public ViewHolder(ViewDataBinding binding) {
-            super(binding.getRoot());
-            mBinding = binding;
+            super(binding);
         }
     }
+
 }

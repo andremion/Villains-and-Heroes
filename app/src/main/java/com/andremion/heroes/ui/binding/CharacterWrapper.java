@@ -1,4 +1,4 @@
-package com.andremion.heroes.data.binding;
+package com.andremion.heroes.ui.binding;
 
 import android.database.Cursor;
 

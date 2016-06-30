@@ -2,7 +2,6 @@ package com.andremion.heroes;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import com.andremion.heroes.ui.search.SearchActivity;
 import com.andremion.heroes.util.DataConstants;
@@ -23,7 +22,6 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
 public class SearchActivityTest {
 
     @Rule
@@ -34,9 +32,9 @@ public class SearchActivityTest {
         // Type the text in the search field
         onView(withId(R.id.search)).perform(typeQuery(DataConstants.CHARACTER_TO_FIND), closeSoftKeyboard());
         // Check if the list is displayed
-        onView(withId(R.id.characters)).check(matches(isDisplayed()));
+        onView(withId(R.id.recycler)).check(matches(isDisplayed()));
         // Check if there is one View item with expected value
         //noinspection unchecked
-        onView(allOf(isDescendantOfA(withId(R.id.characters)), withText(is(DataConstants.CHARACTER_TO_FIND))));
+        onView(allOf(isDescendantOfA(withId(R.id.recycler)), withText(is(DataConstants.CHARACTER_TO_FIND))));
     }
 }

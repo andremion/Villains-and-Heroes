@@ -1,6 +1,7 @@
 package com.andremion.heroes.ui.adapter;
 
 import android.database.Cursor;
+import android.databinding.ViewDataBinding;
 import android.provider.BaseColumns;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -50,25 +51,25 @@ public abstract class CursorAdapter<VH extends RecyclerView.ViewHolder> extends 
         notifyDataSetChanged();
     }
 
-    public interface OnAdapterInteractionListener {
-        void onItemClick(CursorAdapter adapter, View view, int position);
+    public interface OnAdapterInteractionListener<T extends ViewDataBinding> {
+        void onItemClick(CursorAdapter adapter, T binding, int position);
     }
 
-    public abstract class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public final View mView;
+        public final ViewDataBinding mBinding;
 
-        public ViewHolder(View v) {
-            super(v);
-            mView = v;
-            mView.setOnClickListener(this);
+        public ViewHolder(ViewDataBinding binding) {
+            super(binding.getRoot());
+            mBinding = binding;
+            mBinding.getRoot().setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION && mItemClickListener != null) {
-                mItemClickListener.onItemClick(CursorAdapter.this, v, position);
+                mItemClickListener.onItemClick(CursorAdapter.this, mBinding, position);
             }
         }
     }

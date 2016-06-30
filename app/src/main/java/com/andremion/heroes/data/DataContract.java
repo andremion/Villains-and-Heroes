@@ -75,6 +75,10 @@ public class DataContract {
         public static final String COLUMN_DATA_ID = "data_id";
         public static final String COLUMN_NAME = "name";
 
+        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_THUMBNAIL = "thumbnail";
+        public static final String COLUMN_IMAGE = "image";
+
         public static final String URI_PATH = ENTITY_NAME.toLowerCase();
 
         public static final Uri CONTENT_URI =

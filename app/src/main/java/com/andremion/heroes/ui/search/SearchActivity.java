@@ -18,18 +18,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.andremion.heroes.R;
 import com.andremion.heroes.api.MarvelApi;
 import com.andremion.heroes.data.DataContract.Character;
 import com.andremion.heroes.databinding.ActivitySearchBinding;
+import com.andremion.heroes.databinding.ItemListSearchBinding;
 import com.andremion.heroes.ui.adapter.CursorAdapter;
 import com.andremion.heroes.ui.character.CharacterActivity;
 import com.andremion.heroes.ui.search.adapter.SearchAdapter;
 
 public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener,
-        LoaderManager.LoaderCallbacks<Cursor>, CursorAdapter.OnAdapterInteractionListener, SearchView.OnCloseListener {
+        LoaderManager.LoaderCallbacks<Cursor>, CursorAdapter.OnAdapterInteractionListener<ItemListSearchBinding>,
+        SearchView.OnCloseListener {
 
     private static final String ARG_QUERY = "query";
 
@@ -115,14 +116,13 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     }
 
     @Override
-    public void onItemClick(CursorAdapter adapter, View view, int position) {
+    public void onItemClick(CursorAdapter adapter, ItemListSearchBinding binding, int position) {
 
         Cursor data = adapter.getItem(position);
-        View imageView = view.findViewById(R.id.image);
 
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(SearchActivity.this,
-                        imageView, ViewCompat.getTransitionName(imageView));
+                        binding.image, ViewCompat.getTransitionName(binding.image));
         Intent intent = new Intent(this, CharacterActivity.class);
         intent.putExtra(CharacterActivity.EXTRA_ID, data.getLong(data.getColumnIndex(BaseColumns._ID)));
 

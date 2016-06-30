@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.andremion.heroes.BR;
 import com.andremion.heroes.R;
-import com.andremion.heroes.data.binding.SearchWrapper;
+import com.andremion.heroes.ui.binding.SearchWrapper;
 import com.andremion.heroes.ui.adapter.CursorAdapter;
 
 public class SearchAdapter extends CursorAdapter<SearchAdapter.ViewHolder> {
@@ -33,11 +33,9 @@ public class SearchAdapter extends CursorAdapter<SearchAdapter.ViewHolder> {
 
     public class ViewHolder extends CursorAdapter.ViewHolder {
 
-        public final ViewDataBinding mBinding;
-
         public ViewHolder(ViewDataBinding binding) {
-            super(binding.getRoot());
-            mBinding = binding;
+            super(binding);
         }
     }
+
 }

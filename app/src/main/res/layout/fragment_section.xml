@@ -1,40 +1,60 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context=".ui.character.SectionFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/text_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        android:textColor="@color/colorAccent"
-        tools:text="@string/label_comics" />
+    <data>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
+        <import type="android.view.View"/>
+
+        <variable
+            name="label"
+            type="java.lang.String"/>
+
+        <variable
+            name="empty"
+            type="boolean"/>
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_list_section_height"
-        android:layout_marginBottom="@dimen/text_margin"
-        android:visibility="gone"
-        app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/item_list_section" />
-
-    <TextView
-        android:id="@+id/empty"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="@dimen/text_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:text="@string/unavailable_data"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:orientation="vertical"
+        tools:context=".ui.character.SectionFragment">
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/text_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="@{label}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/colorAccent"
+            tools:text="@string/label_comics"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_list_section_height"
+            android:layout_marginBottom="@dimen/text_margin"
+            android:visibility="@{empty ? View.GONE : View.VISIBLE}"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/item_list_section"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="@dimen/text_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="@string/unavailable_data"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:visibility="@{empty ? View.VISIBLE : View.GONE}"/>
+
+    </LinearLayout>
+
+
+</layout>

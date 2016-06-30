@@ -2,6 +2,7 @@ package com.andremion.heroes.ui.character;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,14 +10,14 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.andremion.heroes.R;
 import com.andremion.heroes.data.DataContract;
+import com.andremion.heroes.databinding.FragmentSectionBinding;
+import com.andremion.heroes.databinding.ItemListSectionBinding;
 import com.andremion.heroes.ui.adapter.CursorAdapter;
 import com.andremion.heroes.ui.character.adapter.SectionAdapter;
 
@@ -30,10 +31,9 @@ public class SectionFragment extends Fragment implements LoaderManager.LoaderCal
     private long mCharacter;
     private String mLabel;
 
+    private FragmentSectionBinding mBinding;
     private OnFragmentInteractionListener mListener;
     private SectionAdapter mSectionAdapter;
-    private RecyclerView mRecyclerView;
-    private View mEmptyView;
 
     public SectionFragment() {
         // Required empty public constructor
@@ -61,16 +61,15 @@ public class SectionFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_section, container, false);
-        TextView labelView = (TextView) rootView.findViewById(R.id.label);
-        labelView.setText(mLabel);
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        mRecyclerView.setNestedScrollingEnabled(false);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setAdapter(mSectionAdapter = new SectionAdapter(new OnAdapterInteractionListenerWrapper(mType, mListener)));
-        mEmptyView = rootView.findViewById(R.id.empty);
-        return rootView;
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_section, container, false);
+        mBinding.setLabel(mLabel);
+        mBinding.recycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        mBinding.recycler.setNestedScrollingEnabled(false);
+        mBinding.recycler.setHasFixedSize(true);
+        mBinding.recycler.setAdapter(mSectionAdapter =
+                new SectionAdapter(getContext(),
+                        new OnAdapterInteractionListenerWrapper(mType, mListener)));
+        return mBinding.getRoot();
     }
 
     @Override
@@ -109,13 +108,7 @@ public class SectionFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mSectionAdapter.swapCursor(data);
-        if (data != null && data.getCount() > 0) {
-            mRecyclerView.setVisibility(View.VISIBLE);
-            mEmptyView.setVisibility(View.GONE);
-        } else {
-            mRecyclerView.setVisibility(View.GONE);
-            mEmptyView.setVisibility(View.VISIBLE);
-        }
+        mBinding.setEmpty(data == null || data.getCount() == 0);
     }
 
     @Override
@@ -124,10 +117,11 @@ public class SectionFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     public interface OnFragmentInteractionListener {
-        void onItemClick(CursorAdapter adapter, View view, int position, String type);
+        void onItemClick(CursorAdapter adapter, ItemListSectionBinding binding, int position, String type);
     }
 
-    public static class OnAdapterInteractionListenerWrapper implements CursorAdapter.OnAdapterInteractionListener {
+    public static class OnAdapterInteractionListenerWrapper
+            implements CursorAdapter.OnAdapterInteractionListener<ItemListSectionBinding> {
 
         private final String mType;
         private final OnFragmentInteractionListener mListener;
@@ -138,8 +132,8 @@ public class SectionFragment extends Fragment implements LoaderManager.LoaderCal
         }
 
         @Override
-        public void onItemClick(CursorAdapter adapter, View view, int position) {
-            mListener.onItemClick(adapter, view, position, mType);
+        public void onItemClick(CursorAdapter adapter, ItemListSectionBinding binding, int position) {
+            mListener.onItemClick(adapter, binding, position, mType);
         }
     }
 
