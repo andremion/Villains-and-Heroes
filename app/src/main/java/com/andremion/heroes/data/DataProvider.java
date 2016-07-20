@@ -22,6 +22,8 @@ import com.andremion.heroes.data.DataContract.Series;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.andremion.heroes.data.DataContract.*;
+
 public class DataProvider extends android.content.ContentProvider {
 
     private static final String NUMBER = "/#";
@@ -36,10 +38,13 @@ public class DataProvider extends android.content.ContentProvider {
     private static final int COMIC_ID = 301;
     private static final int SERIES = 400;
     private static final int SERIES_ID = 401;
+    private static final int STORIES = 500;
+    private static final int STORIES_ID = 501;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private static final SQLiteQueryBuilder sComicQueryBuilder = buildComicQueryBuilder();
     private static final SQLiteQueryBuilder sSeriesQueryBuilder = buildSeriesQueryBuilder();
+    private static final SQLiteQueryBuilder sStoriesQueryBuilder = buildStoriesQueryBuilder();
     private DatabaseHelper mDatabaseHelper;
 
     public DataProvider() {
@@ -47,7 +52,7 @@ public class DataProvider extends android.content.ContentProvider {
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = DataContract.CONTENT_AUTHORITY;
+        final String authority = CONTENT_AUTHORITY;
         matcher.addURI(authority, Character.URI_PATH, CHARACTER);
         matcher.addURI(authority, Character.URI_PATH + NUMBER, CHARACTER_ID);
         matcher.addURI(authority, Character.URI_PATH + TEXT, CHARACTER_SUGGEST);
@@ -58,6 +63,8 @@ public class DataProvider extends android.content.ContentProvider {
         matcher.addURI(authority, Comic.URI_PATH + NUMBER, COMIC_ID);
         matcher.addURI(authority, Series.URI_PATH, SERIES);
         matcher.addURI(authority, Series.URI_PATH + NUMBER, SERIES_ID);
+        matcher.addURI(authority, Story.URI_PATH, STORIES);
+        matcher.addURI(authority, Story.URI_PATH + NUMBER, STORIES_ID);
         return matcher;
     }
 
@@ -103,6 +110,27 @@ public class DataProvider extends android.content.ContentProvider {
         return queryBuilder;
     }
 
+    private static SQLiteQueryBuilder buildStoriesQueryBuilder() {
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setDistinct(true);
+        queryBuilder.setTables(Section.ENTITY_NAME +
+                " LEFT JOIN " + Story.ENTITY_NAME +
+                " ON " + Section.ENTITY_NAME + "." + Section.COLUMN_DATA_ID +
+                " = " + Story.ENTITY_NAME + "." + Story._ID
+        );
+        Map<String, String> projectionMap = new HashMap<>();
+        projectionMap.put(Section.ENTITY_NAME + "." + Section._ID, Section.ENTITY_NAME + "." + Section._ID);
+        projectionMap.put(Section.COLUMN_DATA_ID, Section.COLUMN_DATA_ID);
+        projectionMap.put(Section.COLUMN_TYPE, Section.COLUMN_TYPE);
+        projectionMap.put(Section.COLUMN_CHARACTER, Section.COLUMN_CHARACTER);
+        projectionMap.put(Section.COLUMN_NAME, Section.COLUMN_NAME);
+        projectionMap.put(Story.COLUMN_TITLE, Story.COLUMN_TITLE);
+        projectionMap.put(Story.COLUMN_THUMBNAIL, Story.COLUMN_THUMBNAIL);
+        projectionMap.put(Story.COLUMN_IMAGE, Story.COLUMN_IMAGE);
+        queryBuilder.setProjectionMap(projectionMap);
+        return queryBuilder;
+    }
+
     @Override
     public boolean onCreate() {
         mDatabaseHelper = new DatabaseHelper(getContext());
@@ -119,7 +147,7 @@ public class DataProvider extends android.content.ContentProvider {
         switch (sUriMatcher.match(uri)) {
             case CHARACTER:
 
-                int limit = DataContract.getOffset(uri) + DataContract.getLimit(uri);
+                int limit = getOffset(uri) + getLimit(uri);
                 cursor = db.query(Character.ENTITY_NAME,
                         projection, selection, selectionArgs, null, null,
                         sortOrder, limit > 0 ? String.valueOf(limit) : null);
@@ -172,6 +200,13 @@ public class DataProvider extends android.content.ContentProvider {
                         cursor.setNotificationUri(getContext().getContentResolver(), Series.CONTENT_URI);
                     }
                     return cursor;
+                } else if (Section.TYPE_STORIES.equals(type)) {
+                    cursor = sStoriesQueryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+                    if (cursor != null) {
+                        //noinspection ConstantConditions
+                        cursor.setNotificationUri(getContext().getContentResolver(), Story.CONTENT_URI);
+                    }
+                    return cursor;
                 }
 
                 break;
@@ -190,6 +225,15 @@ public class DataProvider extends android.content.ContentProvider {
                         Section.COLUMN_TYPE + " = ? AND " +
                                 Section.COLUMN_DATA_ID + " = " + ContentUris.parseId(uri),
                         new String[]{Section.TYPE_SERIES}, null, null, sortOrder);
+
+                break;
+
+            case STORIES_ID:
+
+                cursor = sStoriesQueryBuilder.query(db, projection,
+                        Section.COLUMN_TYPE + " = ? AND " +
+                                Section.COLUMN_DATA_ID + " = " + ContentUris.parseId(uri),
+                        new String[]{Section.TYPE_STORIES}, null, null, sortOrder);
 
                 break;
 
@@ -296,6 +340,9 @@ public class DataProvider extends android.content.ContentProvider {
                 break;
             case SERIES:
                 entityName = Series.ENTITY_NAME;
+                break;
+            case STORIES:
+                entityName = Story.ENTITY_NAME;
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown URI: " + uri);

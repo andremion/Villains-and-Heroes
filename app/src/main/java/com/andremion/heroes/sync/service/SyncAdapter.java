@@ -22,6 +22,7 @@ import com.andremion.heroes.api.MarvelResult;
 import com.andremion.heroes.api.data.CharacterVO;
 import com.andremion.heroes.api.data.ComicVO;
 import com.andremion.heroes.api.data.SeriesVO;
+import com.andremion.heroes.api.data.StoryVO;
 import com.andremion.heroes.data.DataContract.Character;
 import com.andremion.heroes.data.DataContract.Comic;
 import com.andremion.heroes.data.DataContract.Section;
@@ -31,6 +32,8 @@ import com.andremion.heroes.sync.util.EntryManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.andremion.heroes.data.DataContract.Story;
 
 /**
  * Handle the transfer of data between a server and an app, using the Android sync adapter framework.
@@ -131,6 +134,27 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     }
                 });
 
+                Log.d(LOG_TAG, "Fetching stories...");
+                entryManager = new EntryManager(getContext())
+                        .setTotalKey(EntryManager.Keys.getStoriesTotalKey(characterId))
+                        .setFetchedKey(EntryManager.Keys.getStoriesFetchedKey(characterId))
+                        .setDoneKey(EntryManager.Keys.getStoriesDoneKey(characterId))
+                        .setSyncStats(syncResult.stats);
+                entryManager.sync(new EntryManager.FetchInterface<StoryVO>() {
+                    @Override
+                    public MarvelResult<StoryVO> onFetchEntries(int offset) throws IOException, MarvelException {
+                        MarvelResult<StoryVO> result = mMarvelApi.listStories(characterId, offset);
+                        updateAttributionText(result.getAttribution());
+                        return result;
+                    }
+
+                    @Override
+                    public void onInsertEntries(MarvelResult<StoryVO> result, SyncStats syncStats) {
+                        insertStoriesIntoDatabase(result.getEntries(), syncStats);
+                        syncStats.numEntries += result.getCount();
+                    }
+                });
+
             } else {
 
                 Log.d(LOG_TAG, "Fetching characters...");
@@ -201,6 +225,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 values.put(Section.COLUMN_NAME, series.getTitle());
                 sectionValuesList.add(values);
             }
+            for (StoryVO story : character.getStories()) {
+                values = new ContentValues();
+                values.put(Section.COLUMN_TYPE, Section.TYPE_STORIES);
+                values.put(Section.COLUMN_CHARACTER, character.getId());
+                values.put(Section.COLUMN_DATA_ID, story.getId());
+                values.put(Section.COLUMN_NAME, story.getTitle());
+                sectionValuesList.add(values);
+            }
         }
 
         ContentValues[] characterValues = new ContentValues[characterValuesList.size()];
@@ -234,7 +266,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         int rows = mContentResolver.bulkInsert(Comic.CONTENT_URI, valuesList.toArray(values));
         int skipped = values.length - rows;
         if (skipped > 0) {
-            Log.w(LOG_TAG, skipped + " Comic skipped");
+            Log.w(LOG_TAG, skipped + " Comics skipped");
             syncStats.numSkippedEntries += skipped;
         }
     }
@@ -254,6 +286,25 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         int skipped = values.length - rows;
         if (skipped > 0) {
             Log.w(LOG_TAG, skipped + " Series skipped");
+            syncStats.numSkippedEntries += skipped;
+        }
+    }
+
+    private void insertStoriesIntoDatabase(List<StoryVO> entries, SyncStats syncStats) {
+        List<ContentValues> valuesList = new ArrayList<>();
+        for (StoryVO story : entries) {
+            ContentValues values = new ContentValues();
+            values.put(Story._ID, story.getId());
+            values.put(Story.COLUMN_TITLE, story.getTitle());
+            values.put(Story.COLUMN_THUMBNAIL, story.getThumbnail());
+            values.put(Story.COLUMN_IMAGE, story.getImage());
+            valuesList.add(values);
+        }
+        ContentValues[] values = new ContentValues[valuesList.size()];
+        int rows = mContentResolver.bulkInsert(Story.CONTENT_URI, valuesList.toArray(values));
+        int skipped = values.length - rows;
+        if (skipped > 0) {
+            Log.w(LOG_TAG, skipped + " Stories skipped");
             syncStats.numSkippedEntries += skipped;
         }
     }

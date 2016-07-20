@@ -58,9 +58,12 @@ public class CharacterActivity extends AppCompatActivity implements
             Fragment comicFragment = SectionFragment.newInstance(Section.TYPE_COMIC, characterId, comicLabel);
             String seriesLabel = getString(R.string.label_series);
             Fragment seriesFragment = SectionFragment.newInstance(Section.TYPE_SERIES, characterId, seriesLabel);
+            String storiesLabel = getString(R.string.label_stories);
+            Fragment storiesFragment = SectionFragment.newInstance(Section.TYPE_STORIES, characterId, storiesLabel);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.sections, seriesFragment)
                     .add(R.id.sections, comicFragment)
+                    .add(R.id.sections, seriesFragment)
+                    .add(R.id.sections, storiesFragment)
                     .commit();
         }
 

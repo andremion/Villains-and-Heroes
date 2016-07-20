@@ -4,6 +4,7 @@ import com.andremion.heroes.api.MarvelResult;
 import com.andremion.heroes.api.data.CharacterVO;
 import com.andremion.heroes.api.data.ComicVO;
 import com.andremion.heroes.api.data.SeriesVO;
+import com.andremion.heroes.api.data.StoryVO;
 import com.andremion.heroes.api.json.CharacterData;
 import com.andremion.heroes.api.json.CharacterDataContainer;
 import com.andremion.heroes.api.json.CharacterDataWrapper;
@@ -15,6 +16,10 @@ import com.andremion.heroes.api.json.SeriesData;
 import com.andremion.heroes.api.json.SeriesDataContainer;
 import com.andremion.heroes.api.json.SeriesDataWrapper;
 import com.andremion.heroes.api.json.SeriesSummary;
+import com.andremion.heroes.api.json.StoryData;
+import com.andremion.heroes.api.json.StoryDataContainer;
+import com.andremion.heroes.api.json.StoryDataWrapper;
+import com.andremion.heroes.api.json.StorySummary;
 import com.andremion.heroes.api.json.Url;
 
 import java.util.ArrayList;
@@ -62,6 +67,14 @@ public class DataParser {
                         seriesList.add(series);
                     }
                     character.setSeries(seriesList);
+                    List<StoryVO> storyList = new ArrayList<>();
+                    for (StorySummary storySummary : characterData.stories.items) {
+                        StoryVO story = new StoryVO();
+                        story.setId(storySummary.getId());
+                        story.setTitle(storySummary.name);
+                        storyList.add(story);
+                    }
+                    character.setStories(storyList);
                     characterList.add(character);
                 }
                 result.setEntries(characterList);
@@ -111,6 +124,29 @@ public class DataParser {
                     seriesList.add(series);
                 }
                 result.setEntries(seriesList);
+            }
+        }
+        result.setAttribution(dataWrapper.attributionText);
+        return result;
+    }
+
+    public static MarvelResult<StoryVO> parse(StoryDataWrapper dataWrapper) {
+        MarvelResult<StoryVO> result = new MarvelResult<>();
+        StoryDataContainer dataContainer = dataWrapper.data;
+        if (dataContainer != null) {
+            result.setTotal(dataContainer.total);
+            StoryData[] results = dataContainer.results;
+            if (results != null) {
+                List<StoryVO> storyList = new ArrayList<>(results.length);
+                for (StoryData storyData : results) {
+                    StoryVO story = new StoryVO();
+                    story.setId(storyData.id);
+                    story.setTitle(storyData.title);
+                    story.setThumbnail(storyData.getThumbnail());
+                    story.setImage(storyData.getImage());
+                    storyList.add(story);
+                }
+                result.setEntries(storyList);
             }
         }
         result.setAttribution(dataWrapper.attributionText);

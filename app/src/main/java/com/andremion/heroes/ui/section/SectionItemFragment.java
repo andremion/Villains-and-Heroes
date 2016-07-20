@@ -18,6 +18,8 @@ import com.andremion.heroes.data.DataContract.Series;
 import com.andremion.heroes.databinding.FragmentSectionItemBinding;
 import com.andremion.heroes.ui.binding.SectionWrapper;
 
+import static com.andremion.heroes.data.DataContract.Story;
+
 public class SectionItemFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String ARG_TYPE = "type";
@@ -76,6 +78,13 @@ public class SectionItemFragment extends Fragment implements LoaderManager.Loade
         } else if (Section.TYPE_SERIES.equals(mType)) {
             return new CursorLoader(getContext(),
                     Series.buildUri(mId),
+                    null,
+                    null,
+                    null,
+                    null);
+        } else if (Section.TYPE_STORIES.equals(mType)) {
+            return new CursorLoader(getContext(),
+                    Story.buildUri(mId),
                     null,
                     null,
                     null,

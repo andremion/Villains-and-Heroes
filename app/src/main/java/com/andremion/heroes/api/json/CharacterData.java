@@ -8,6 +8,7 @@ public class CharacterData {
     public Image thumbnail;
     public ComicList comics;
     public SeriesList series;
+    public StoryList stories;
     public Url[] urls;
 
     public String getThumbnail() {

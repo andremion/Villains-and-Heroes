@@ -12,6 +12,7 @@ public class CharacterVO implements Serializable {
     private String mImage;
     private List<ComicVO> mComics;
     private List<SeriesVO> mSeries;
+    private List<StoryVO> mStories;
     private String mDetail;
     private String mWiki;
     private String mComicLink;
@@ -73,6 +74,14 @@ public class CharacterVO implements Serializable {
 
     public void setSeries(List<SeriesVO> series) {
         mSeries = series;
+    }
+
+    public List<StoryVO> getStories() {
+        return mStories;
+    }
+
+    public void setStories(List<StoryVO> stories) {
+        mStories = stories;
     }
 
     public String getDetail() {
