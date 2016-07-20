@@ -13,6 +13,8 @@ Android app that uses [Marvel Comics API](https://developer.marvel.com) and allo
 
 ## Technologies and libraries used in the project
 
+* [Data Binding](https://developer.android.com/topic/libraries/data-binding)
+Write declarative layouts and minimize the glue code necessary to bind application logic and layouts
 * [Retrofit](http://square.github.io/retrofit)
 A type-safe HTTP client for Android and Java
 * [Gson](https://github.com/google/gson)
