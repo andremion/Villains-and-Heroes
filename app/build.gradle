@@ -22,7 +22,7 @@ android {
     }
 }
 
-final APPCOMPAT_VERSION = '24.1.+'
+final APPCOMPAT_VERSION = '24.2.+'
 final RETROFIT_VERSION = '2.1.+'
 
 dependencies {
