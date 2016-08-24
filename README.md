@@ -30,7 +30,7 @@ An image loading and caching library for Android focused on smooth scrolling
 * [Espresso](https://google.github.io/android-testing-support-library/docs/espresso/index.html)
 Use Espresso to write concise, beautiful, and reliable Android UI tests
 
-### License
+## License
 
     Copyright 2016 André Mion
 
