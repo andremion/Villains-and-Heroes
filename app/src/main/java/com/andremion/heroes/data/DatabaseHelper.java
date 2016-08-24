@@ -10,6 +10,8 @@ import com.andremion.heroes.data.DataContract.Comic;
 import com.andremion.heroes.data.DataContract.Section;
 import com.andremion.heroes.data.DataContract.Series;
 
+import static com.andremion.heroes.data.DataContract.*;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "heroes.db";
@@ -60,14 +62,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Series.COLUMN_IMAGE + " TEXT NOT NULL, " +
                 "PRIMARY KEY (" + Series._ID + ") ON CONFLICT REPLACE);";
 
+        final String SQL_CREATE_STORIES_TABLE = "CREATE TABLE " + Story.ENTITY_NAME + " (" +
+                Story._ID + " INTEGER, " +
+                Story.COLUMN_TITLE + " TEXT NOT NULL, " +
+                Story.COLUMN_THUMBNAIL + " TEXT, " +
+                Story.COLUMN_IMAGE + " TEXT, " +
+                "PRIMARY KEY (" + Story._ID + ") ON CONFLICT REPLACE);";
+
         db.execSQL(SQL_CREATE_CHARACTER_TABLE);
         db.execSQL(SQL_CREATE_SECTION_TABLE);
         db.execSQL(SQL_CREATE_COMIC_TABLE);
         db.execSQL(SQL_CREATE_SERIES_TABLE);
+        db.execSQL(SQL_CREATE_STORIES_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + Story.ENTITY_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Series.ENTITY_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Comic.ENTITY_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Section.ENTITY_NAME);

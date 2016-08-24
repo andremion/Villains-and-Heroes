@@ -6,6 +6,7 @@ import com.andremion.heroes.api.MarvelResult;
 import com.andremion.heroes.api.data.CharacterVO;
 import com.andremion.heroes.api.data.ComicVO;
 import com.andremion.heroes.api.data.SeriesVO;
+import com.andremion.heroes.api.data.StoryVO;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -70,6 +71,21 @@ public class MarvelApiUnitTest {
         assertNotNull(entries);
 
         // Get the series list and check for not empty
+        assertFalse(entries.isEmpty());
+    }
+
+    @Test
+    public void listStoriesByCharacter() throws IOException, MarvelException {
+
+        // Fetch the stories result and check for not null
+        MarvelResult<StoryVO> result = mMarvelApi.listStories(CHARACTER_ID, OFFSET);
+        assertNotNull(result);
+
+        // Get the stories list and check for not null
+        List<StoryVO> entries = result.getEntries();
+        assertNotNull(entries);
+
+        // Get the stories list and check for not empty
         assertFalse(entries.isEmpty());
     }
 

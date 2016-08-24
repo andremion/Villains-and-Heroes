@@ -114,12 +114,15 @@ public class EntryManager {
         private static final String TOTAL_CHARACTER = "total_characters";
         private static final String TOTAL_COMICS = "total_comics";
         private static final String TOTAL_SERIES = "total_series";
+        private static final String TOTAL_STORIES = "total_stories";
         private static final String FETCHED_CHARACTER = "fetched_characters";
         private static final String FETCHED_COMICS = "fetched_comics";
         private static final String FETCHED_SERIES = "fetched_series";
+        private static final String FETCHED_STORIES = "fetched_stories";
         private static final String DONE_CHARACTERS = "done_characters";
         private static final String DONE_COMICS = "done_comics";
         private static final String DONE_SERIES = "done_series";
+        private static final String DONE_STORIES = "done_stories";
 
         public static String getCharactersTotalKey() {
             return TOTAL_CHARACTER;
@@ -155,6 +158,18 @@ public class EntryManager {
 
         public static String getSeriesDoneKey(long characterId) {
             return String.format(DONE_SERIES + "(%d)", characterId);
+        }
+
+        public static String getStoriesTotalKey(long characterId) {
+            return String.format(TOTAL_STORIES + "(%d)", characterId);
+        }
+
+        public static String getStoriesFetchedKey(long characterId) {
+            return String.format(FETCHED_STORIES + "(%d)", characterId);
+        }
+
+        public static String getStoriesDoneKey(long characterId) {
+            return String.format(DONE_STORIES + "(%d)", characterId);
         }
 
     }

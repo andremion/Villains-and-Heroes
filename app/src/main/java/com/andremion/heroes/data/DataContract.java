@@ -68,6 +68,7 @@ public class DataContract {
 
         public static final String TYPE_COMIC = "comic";
         public static final String TYPE_SERIES = "series";
+        public static final String TYPE_STORIES = "stories";
 
         public static final String ENTITY_NAME = Section.class.getSimpleName();
         public static final String COLUMN_TYPE = "type";
@@ -109,6 +110,23 @@ public class DataContract {
     public static final class Series implements BaseColumns {
 
         public static final String ENTITY_NAME = Series.class.getSimpleName();
+        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_THUMBNAIL = "thumbnail";
+        public static final String COLUMN_IMAGE = "image";
+
+        public static final String URI_PATH = ENTITY_NAME.toLowerCase();
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendEncodedPath(URI_PATH).build();
+
+        public static Uri buildUri(long id) {
+            return ContentUris.appendId(CONTENT_URI.buildUpon(), id).build();
+        }
+    }
+
+    public static final class Story implements BaseColumns {
+
+        public static final String ENTITY_NAME = Story.class.getSimpleName();
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_THUMBNAIL = "thumbnail";
         public static final String COLUMN_IMAGE = "image";

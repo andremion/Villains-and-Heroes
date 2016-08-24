@@ -4,9 +4,11 @@ import com.andremion.heroes.api.auth.AuthenticatorInterceptor;
 import com.andremion.heroes.api.data.CharacterVO;
 import com.andremion.heroes.api.data.ComicVO;
 import com.andremion.heroes.api.data.SeriesVO;
+import com.andremion.heroes.api.data.StoryVO;
 import com.andremion.heroes.api.json.CharacterDataWrapper;
 import com.andremion.heroes.api.json.ComicDataWrapper;
 import com.andremion.heroes.api.json.SeriesDataWrapper;
+import com.andremion.heroes.api.json.StoryDataWrapper;
 import com.andremion.heroes.api.util.DataParser;
 
 import java.io.IOException;
@@ -76,6 +78,15 @@ public class MarvelApi {
         }
     }
 
+    public MarvelResult<StoryVO> listStories(long characterId, int offset) throws IOException, MarvelException {
+        Response<StoryDataWrapper> response = mService.listStories(characterId, offset, MAX_FETCH_LIMIT).execute();
+        if (response.isSuccessful()) {
+            return DataParser.parse(response.body());
+        } else {
+            throw new MarvelException(response.code(), response.message());
+        }
+    }
+
     private interface MarvelService {
 
         @GET("characters")
@@ -91,6 +102,12 @@ public class MarvelApi {
 
         @GET("characters/{characterId}/series")
         Call<SeriesDataWrapper> listSeries(
+                @Path("characterId") long characterId,
+                @Query("offset") int offset,
+                @Query("limit") int limit);
+
+        @GET("characters/{characterId}/stories")
+        Call<StoryDataWrapper> listStories(
                 @Path("characterId") long characterId,
                 @Query("offset") int offset,
                 @Query("limit") int limit);
