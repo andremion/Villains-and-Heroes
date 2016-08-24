@@ -11,7 +11,7 @@ Android app that uses [Marvel Comics API](https://developer.marvel.com) and allo
 
 1. Put your private and public keys in `com/andremion/heroes/api/auth/AuthenticatorInterceptor.java`
 
-## Technologies and libraries used in the project
+## Libraries and tools used in the project
 
 * [Retrofit](http://square.github.io/retrofit)
 A type-safe HTTP client for Android and Java
