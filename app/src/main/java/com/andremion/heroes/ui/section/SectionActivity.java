@@ -36,6 +36,7 @@ public class SectionActivity extends AppCompatActivity implements LoaderManager.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_section);
+        mBinding.setPresenter(this);
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 

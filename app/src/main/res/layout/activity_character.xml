@@ -36,12 +36,11 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
-                app:expandedTitleMarginBottom="@dimen/activity_vertical_margin"
                 app:expandedTitleTextAppearance="@style/TextAppearance.Character.Name"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:title="@{character.name}">
 
-                <com.andremion.heroes.ui.character.view.CharacterImageView
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
