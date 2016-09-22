@@ -3,7 +3,6 @@ package com.andremion.heroes;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import com.andremion.heroes.ui.home.MainActivity;
 import com.andremion.heroes.util.DataConstants;
@@ -23,7 +22,6 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
 public class MainActivityTest {
 
     @Rule

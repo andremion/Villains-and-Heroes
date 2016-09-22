@@ -3,7 +3,6 @@ package com.andremion.heroes;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import com.andremion.heroes.ui.character.CharacterActivity;
 import com.andremion.heroes.util.DataConstants;
@@ -21,7 +20,6 @@ import static com.andremion.heroes.matchers.CustomMatchers.withToolbarLayoutTitl
 import static org.hamcrest.Matchers.is;
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
 public class CharacterActivityTest {
 
     @Rule
