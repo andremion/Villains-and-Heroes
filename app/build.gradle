@@ -20,10 +20,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
-final APPCOMPAT_VERSION = '24.2.+'
-final RETROFIT_VERSION = '2.1.+'
+def MARVEL_PRIVATE_KEY = System.getenv("MARVEL_PRIVATE_KEY") ? '"' + System.getenv("MARVEL_PRIVATE_KEY") + '"' : '"' + marvelPrivateKey + '"'
+def MARVEL_PUBLIC_KEY = System.getenv("MARVEL_PUBLIC_KEY") ? '"' + System.getenv("MARVEL_PUBLIC_KEY") + '"' : '"' + marvelPublicKey + '"'
+
+android.buildTypes.each { type ->
+    type.buildConfigField "String", "MARVEL_PRIVATE_KEY", MARVEL_PRIVATE_KEY
+    type.buildConfigField "String", "MARVEL_PUBLIC_KEY", MARVEL_PUBLIC_KEY
+}
+
+def APPCOMPAT_VERSION = '24.2.+'
+def RETROFIT_VERSION = '2.1.+'
 
 dependencies {
     compile "com.android.support:design:$APPCOMPAT_VERSION"
