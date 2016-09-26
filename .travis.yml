@@ -1,5 +1,10 @@
 language: android
 
+jdk:
+  # Jdk version used by your project
+  # Prevent java.lang.UnsupportedClassVersionError: com/android/build/gradle/AppPlugin : Unsupported major.minor version 52.0
+  - oraclejdk8
+
 android:
   components:
 
@@ -21,13 +26,6 @@ android:
     - sys-img-armeabi-v7a-android-24
     - sys-img-x86-android-15
     - sys-img-x86-android-24
-    
-# Emulator Management: Create, Start and Wait
-before_script:
-  - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
-  - emulator -avd test -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
 
 # Caching in Gradle means that to avoid uploading the cache after every build
 before_cache:
@@ -40,6 +38,13 @@ cache:
 # Prevent ./gradlew: Permission denied
 before_install:
   - chmod +x gradlew
+
+# Emulator Management: Create, Start and Wait
+before_script:
+  - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
 #Build, and run tests
 script: ./gradlew connectedCheck
