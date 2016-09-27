@@ -26,6 +26,10 @@ android:
     - sys-img-armeabi-v7a-android-24
     - sys-img-x86-android-15
     - sys-img-x86-android-24
+    
+  licenses:
+    # Accepted licenses
+    - 'android-sdk-license.*'
 
 # Caching in Gradle means that to avoid uploading the cache after every build
 before_cache:
