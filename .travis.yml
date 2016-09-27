@@ -29,7 +29,9 @@ android:
     
   licenses:
     # Accepted licenses
-    - 'android-sdk-license.*'
+  - android-sdk-preview-license-.+
+  - android-sdk-license-.+
+  - google-gdk-license-.+
 
 # Caching in Gradle means that to avoid uploading the cache after every build
 before_cache:
