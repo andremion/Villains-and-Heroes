@@ -11,7 +11,7 @@ Android app that uses [Marvel Comics API](https://developer.marvel.com) and allo
 
 ## Credentials
 
-1. Put `marvelPrivateKey` and `marvelPublicKey` in your `gradle.properties` or set `MARVEL_PRIVATE_KEY` and `MARVEL_PUBLIC_KEY` in your CI Environment Variables
+1. Put your secret Marvel keys in `marvelPrivateKey` and `marvelPublicKey` properties in your `gradle.properties` or set `MARVEL_PRIVATE_KEY` and `MARVEL_PUBLIC_KEY` variables in your Environment Variables
 
 ## Libraries and tools used in the project
 

@@ -25,12 +25,12 @@ android {
     }
 }
 
-def MARVEL_PRIVATE_KEY = System.getenv("MARVEL_PRIVATE_KEY") ? '"' + System.getenv("MARVEL_PRIVATE_KEY") + '"' : '"' + marvelPrivateKey + '"'
-def MARVEL_PUBLIC_KEY = System.getenv("MARVEL_PUBLIC_KEY") ? '"' + System.getenv("MARVEL_PUBLIC_KEY") + '"' : '"' + marvelPublicKey + '"'
+def MARVEL_PRIVATE_KEY = System.getenv("MARVEL_PRIVATE_KEY") ?: marvelPrivateKey
+def MARVEL_PUBLIC_KEY = System.getenv("MARVEL_PUBLIC_KEY") ?: marvelPublicKey
 
 android.buildTypes.each { type ->
-    type.buildConfigField "String", "MARVEL_PRIVATE_KEY", MARVEL_PRIVATE_KEY
-    type.buildConfigField "String", "MARVEL_PUBLIC_KEY", MARVEL_PUBLIC_KEY
+    type.buildConfigField "String", "MARVEL_PRIVATE_KEY", "\"$MARVEL_PRIVATE_KEY\""
+    type.buildConfigField "String", "MARVEL_PUBLIC_KEY", "\"$MARVEL_PUBLIC_KEY\""
 }
 
 def APPCOMPAT_VERSION = '24.2.+'
