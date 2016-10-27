@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.andremion.heroes.ui.character.CharacterActivity;
+import com.andremion.heroes.ui.character.view.CharacterActivity;
 import com.andremion.heroes.util.DataConstants;
 
 import org.junit.Before;
@@ -27,7 +27,8 @@ public class CharacterActivityTest {
         @Override
         protected Intent getActivityIntent() {
             Intent intent = super.getActivityIntent();
-            intent.putExtra(CharacterActivity.EXTRA_ID, DataConstants.CHARACTER_ID);
+            // TODO: 03/10/2016 Update this
+            intent.putExtra(CharacterActivity.EXTRA_CHARACTER, DataConstants.CHARACTER_ID);
             return intent;
         }
     };

@@ -1,8 +1,5 @@
 <resources>
-    <!--Data-->
-    <string name="data_provider_authority" translatable="false">com.andremion.heroes.data.provider</string>
-    <!--Sync-->
-    <string name="sync_account_type" translatable="false">heroes.andremion.com</string>
+    <!--Fetch-->
     <string name="fetching_data">Fetching data…</string>
     <string name="initial_info">This app fetches data provided by Marvel on Internet. Standard charges may apply on mobile network.</string>
     <string name="connection_error">Oops! Something went wrong. Check your Internet connection and try again.</string>

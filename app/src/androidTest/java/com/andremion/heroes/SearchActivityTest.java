@@ -3,7 +3,7 @@ package com.andremion.heroes;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.andremion.heroes.ui.search.SearchActivity;
+import com.andremion.heroes.ui.search.view.SearchActivity;
 import com.andremion.heroes.util.DataConstants;
 
 import org.junit.Rule;

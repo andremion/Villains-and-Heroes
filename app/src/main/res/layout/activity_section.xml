@@ -6,12 +6,12 @@
     <data>
 
         <variable
-            name="presenter"
-            type="com.andremion.heroes.ui.section.SectionActivity"/>
-
-        <variable
             name="attribution"
             type="java.lang.String"/>
+
+        <variable
+            name="presenter"
+            type="com.andremion.heroes.ui.section.SectionPresenter" />
 
     </data>
 
@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        tools:context=".ui.section.SectionActivity">
+        tools:context=".ui.section.view.SectionActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,12 +39,12 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 tools:text="Data provided by Marvel. © 2014 Marvel"/>
 
-            <ImageButton
+            <ImageView
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/design_fab_size_normal"
+                android:layout_height="@dimen/design_fab_size_normal"
                 android:layout_gravity="end"
-                android:onClick="@{() -> presenter.onCloseClick()}"
+                android:onClick="@{() -> presenter.closeClick()}"
                 android:src="@drawable/ic_close_white_24dp"/>
 
         </LinearLayout>

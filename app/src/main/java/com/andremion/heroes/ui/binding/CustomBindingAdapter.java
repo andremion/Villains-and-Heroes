@@ -5,7 +5,6 @@ import android.widget.ImageView;
 
 import com.andremion.heroes.R;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 
 public class CustomBindingAdapter {
 
@@ -13,7 +12,8 @@ public class CustomBindingAdapter {
     public static void loadImage(ImageView imageView, String url) {
         Glide.with(imageView.getContext())
                 .load(url)
-                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .centerCrop()
+//                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                 .error(R.mipmap.ic_launcher)
                 .into(imageView);
     }

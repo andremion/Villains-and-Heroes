@@ -8,7 +8,7 @@
 
         <variable
             name="character"
-            type="com.andremion.heroes.ui.binding.CharacterWrapper"/>
+            type="com.andremion.heroes.api.data.CharacterVO" />
 
     </data>
 

@@ -7,14 +7,24 @@ import java.util.List;
 
 public class MarvelResult<T> {
 
+    private int mOffset;
     private int mTotal;
     private List<T> mEntries;
     private String mAttribution;
 
     public MarvelResult() {
+        mOffset = 0;
         mTotal = 0;
         mEntries = new ArrayList<>();
         mAttribution = "";
+    }
+
+    public int getOffset() {
+        return mOffset;
+    }
+
+    public void setOffset(int offset) {
+        mOffset = offset;
     }
 
     public int getTotal() {
@@ -41,7 +51,7 @@ public class MarvelResult<T> {
         return mAttribution;
     }
 
-    public void setAttribution(String attribution) {
+    public void setAttribution(@NonNull String attribution) {
         mAttribution = attribution;
     }
 }

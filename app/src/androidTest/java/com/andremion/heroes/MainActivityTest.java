@@ -4,7 +4,7 @@ import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.andremion.heroes.ui.home.MainActivity;
+import com.andremion.heroes.ui.home.view.MainActivity;
 import com.andremion.heroes.util.DataConstants;
 
 import org.junit.Rule;

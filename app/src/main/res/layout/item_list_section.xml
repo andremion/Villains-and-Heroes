@@ -8,7 +8,7 @@
 
         <variable
             name="section"
-            type="com.andremion.heroes.ui.binding.SectionWrapper"/>
+            type="com.andremion.heroes.api.data.SectionVO" />
 
         <variable
             name="imageTransition"
@@ -42,7 +42,7 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:lines="2"
-                android:text="@{section.name ?? section.title}"
+                android:text="@{section.title}"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 tools:text="@string/app_name"/>

@@ -1,19 +1,18 @@
 package com.andremion.heroes.api;
 
+import com.andremion.heroes.BuildConfig;
 import com.andremion.heroes.api.auth.AuthenticatorInterceptor;
 import com.andremion.heroes.api.data.CharacterVO;
-import com.andremion.heroes.api.data.ComicVO;
-import com.andremion.heroes.api.data.SeriesVO;
-import com.andremion.heroes.api.data.StoryVO;
+import com.andremion.heroes.api.data.SectionVO;
 import com.andremion.heroes.api.json.CharacterDataWrapper;
-import com.andremion.heroes.api.json.ComicDataWrapper;
-import com.andremion.heroes.api.json.SeriesDataWrapper;
-import com.andremion.heroes.api.json.StoryDataWrapper;
+import com.andremion.heroes.api.json.SectionDataWrapper;
 import com.andremion.heroes.api.util.DataParser;
 
 import java.io.IOException;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.logging.HttpLoggingInterceptor.Level;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -24,16 +23,21 @@ import retrofit2.http.Query;
 
 public class MarvelApi {
 
-    public static final int MAX_FETCH_LIMIT = 100;
-
     private static final String BASE_URL = "http://gateway.marvel.com/v1/public/";
+    private static final int MAX_FETCH_LIMIT = 20;
     private static MarvelApi sMarvelApi;
     private final MarvelService mService;
+    private Call<CharacterDataWrapper> mLastSearchCall;
 
     private MarvelApi() {
 
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(BuildConfig.DEBUG ? Level.BODY : Level.NONE);
+
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new AuthenticatorInterceptor()).build();
+                .addInterceptor(new AuthenticatorInterceptor())
+                .addInterceptor(logging)
+                .build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -52,7 +56,7 @@ public class MarvelApi {
     }
 
     public MarvelResult<CharacterVO> listCharacters(int offset) throws IOException, MarvelException {
-        Response<CharacterDataWrapper> response = mService.listCharacters(offset, MAX_FETCH_LIMIT).execute();
+        Response<CharacterDataWrapper> response = mService.listCharacters(null, offset, MAX_FETCH_LIMIT).execute();
         if (response.isSuccessful()) {
             return DataParser.parse(response.body());
         } else {
@@ -60,8 +64,20 @@ public class MarvelApi {
         }
     }
 
-    public MarvelResult<ComicVO> listComics(long characterId, int offset) throws IOException, MarvelException {
-        Response<ComicDataWrapper> response = mService.listComics(characterId, offset, MAX_FETCH_LIMIT).execute();
+    public void listCharacters(int offset, MarvelCallback<CharacterDataWrapper> callback) {
+        mService.listCharacters(null, offset, MAX_FETCH_LIMIT).enqueue(callback);
+    }
+
+    public void searchCharacters(String query, MarvelCallback<CharacterDataWrapper> callback) {
+        if (mLastSearchCall != null && !mLastSearchCall.isCanceled()) {
+            mLastSearchCall.cancel();
+        }
+        mLastSearchCall = mService.listCharacters(query, /* offset */ 0, MAX_FETCH_LIMIT);
+        mLastSearchCall.enqueue(callback);
+    }
+
+    public MarvelResult<SectionVO> listComics(long characterId, int offset) throws IOException, MarvelException {
+        Response<SectionDataWrapper> response = mService.listComics(characterId, offset, MAX_FETCH_LIMIT).execute();
         if (response.isSuccessful()) {
             return DataParser.parse(response.body());
         } else {
@@ -69,8 +85,12 @@ public class MarvelApi {
         }
     }
 
-    public MarvelResult<SeriesVO> listSeries(long characterId, int offset) throws IOException, MarvelException {
-        Response<SeriesDataWrapper> response = mService.listSeries(characterId, offset, MAX_FETCH_LIMIT).execute();
+    public void listComics(long characterId, int offset, MarvelCallback<SectionDataWrapper> callback) {
+        mService.listComics(characterId, offset, MAX_FETCH_LIMIT).enqueue(callback);
+    }
+
+    public MarvelResult<SectionVO> listSeries(long characterId, int offset) throws IOException, MarvelException {
+        Response<SectionDataWrapper> response = mService.listSeries(characterId, offset, MAX_FETCH_LIMIT).execute();
         if (response.isSuccessful()) {
             return DataParser.parse(response.body());
         } else {
@@ -78,36 +98,55 @@ public class MarvelApi {
         }
     }
 
-    public MarvelResult<StoryVO> listStories(long characterId, int offset) throws IOException, MarvelException {
-        Response<StoryDataWrapper> response = mService.listStories(characterId, offset, MAX_FETCH_LIMIT).execute();
+    public void listSeries(long characterId, int offset, MarvelCallback<SectionDataWrapper> callback) {
+        mService.listSeries(characterId, offset, MAX_FETCH_LIMIT).enqueue(callback);
+    }
+
+    public MarvelResult<SectionVO> listStories(long characterId, int offset) throws IOException, MarvelException {
+        Response<SectionDataWrapper> response = mService.listStories(characterId, offset, MAX_FETCH_LIMIT).execute();
         if (response.isSuccessful()) {
             return DataParser.parse(response.body());
         } else {
             throw new MarvelException(response.code(), response.message());
         }
+    }
+
+    public void listStories(long characterId, int offset, MarvelCallback<SectionDataWrapper> callback) {
+        mService.listStories(characterId, offset, MAX_FETCH_LIMIT).enqueue(callback);
+    }
+
+    public void listEvents(long characterId, int offset, MarvelCallback<SectionDataWrapper> callback) {
+        mService.listEvents(characterId, offset, MAX_FETCH_LIMIT).enqueue(callback);
     }
 
     private interface MarvelService {
 
         @GET("characters")
         Call<CharacterDataWrapper> listCharacters(
+                @Query("nameStartsWith") String query,
                 @Query("offset") int offset,
                 @Query("limit") int limit);
 
         @GET("characters/{characterId}/comics")
-        Call<ComicDataWrapper> listComics(
+        Call<SectionDataWrapper> listComics(
                 @Path("characterId") long characterId,
                 @Query("offset") int offset,
                 @Query("limit") int limit);
 
         @GET("characters/{characterId}/series")
-        Call<SeriesDataWrapper> listSeries(
+        Call<SectionDataWrapper> listSeries(
                 @Path("characterId") long characterId,
                 @Query("offset") int offset,
                 @Query("limit") int limit);
 
         @GET("characters/{characterId}/stories")
-        Call<StoryDataWrapper> listStories(
+        Call<SectionDataWrapper> listStories(
+                @Path("characterId") long characterId,
+                @Query("offset") int offset,
+                @Query("limit") int limit);
+
+        @GET("characters/{characterId}/events")
+        Call<SectionDataWrapper> listEvents(
                 @Path("characterId") long characterId,
                 @Query("offset") int offset,
                 @Query("limit") int limit);

@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="search"
-            type="com.andremion.heroes.ui.binding.SearchWrapper"/>
+            name="character"
+            type="com.andremion.heroes.api.data.CharacterVO" />
 
     </data>
 
@@ -28,7 +28,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:transitionName="@string/transition_character_image"
-                app:imageUrl="@{search.image}"
+                app:imageUrl="@{character.image}"
                 tools:src="@mipmap/ic_launcher"/>
 
             <TextView
@@ -38,7 +38,7 @@
                 android:layout_marginRight="@dimen/text_margin"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="@{search.text}"
+                android:text="@{character.name}"
                 android:textAppearance="?attr/textAppearanceSearchResultSubtitle"
                 tools:text="@string/app_name"/>
 

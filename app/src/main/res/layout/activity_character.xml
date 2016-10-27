@@ -9,12 +9,16 @@
         <import type="android.view.View"/>
 
         <variable
-            name="character"
-            type="com.andremion.heroes.ui.binding.CharacterWrapper"/>
+            name="attribution"
+            type="java.lang.String" />
 
         <variable
-            name="attribution"
-            type="java.lang.String"/>
+            name="character"
+            type="com.andremion.heroes.api.data.CharacterVO" />
+
+        <variable
+            name="presenter"
+            type="com.andremion.heroes.ui.character.CharacterPresenter" />
 
     </data>
 
@@ -22,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".ui.character.CharacterActivity">
+        tools:context=".ui.character.view.CharacterActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -96,13 +100,159 @@
                     android:textIsSelectable="true"
                     tools:text="@string/unavailable_data"/>
 
-                <!--Sections-->
+                <!--Comics-->
 
                 <LinearLayout
-                    android:id="@+id/sections"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/text_margin"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:text="@string/label_comics"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="@color/colorAccent" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_comics"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/item_list_section_height"
+                        android:layout_marginBottom="@dimen/text_margin"
+                        android:visibility="@{character.comics.empty ? View.GONE : View.VISIBLE}"
+                        app:layoutManager="LinearLayoutManager"
+                        tools:listitem="@layout/item_list_section" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/text_margin"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:text="@string/unavailable_data"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:visibility="@{character.comics.empty ? View.VISIBLE : View.GONE}" />
+
+                </LinearLayout>
+
+                <!--Series-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/text_margin"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:text="@string/label_series"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="@color/colorAccent" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_series"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/item_list_section_height"
+                        android:layout_marginBottom="@dimen/text_margin"
+                        android:visibility="@{character.series.empty ? View.GONE : View.VISIBLE}"
+                        app:layoutManager="LinearLayoutManager"
+                        tools:listitem="@layout/item_list_section" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/text_margin"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:text="@string/unavailable_data"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:visibility="@{character.series.empty ? View.VISIBLE : View.GONE}" />
+
+                </LinearLayout>
+
+                <!--Stories-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/text_margin"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:text="@string/label_stories"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="@color/colorAccent" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_stories"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/item_list_section_height"
+                        android:layout_marginBottom="@dimen/text_margin"
+                        android:visibility="@{character.stories.empty ? View.GONE : View.VISIBLE}"
+                        app:layoutManager="LinearLayoutManager"
+                        tools:listitem="@layout/item_list_section" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/text_margin"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:text="@string/unavailable_data"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:visibility="@{character.stories.empty ? View.VISIBLE : View.GONE}" />
+
+                </LinearLayout>
+
+                <!--Events-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/text_margin"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:text="@string/label_events"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="@color/colorAccent" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_events"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/item_list_section_height"
+                        android:layout_marginBottom="@dimen/text_margin"
+                        android:visibility="@{character.events.empty ? View.GONE : View.VISIBLE}"
+                        app:layoutManager="LinearLayoutManager"
+                        tools:listitem="@layout/item_list_section" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/text_margin"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:text="@string/unavailable_data"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:visibility="@{character.events.empty ? View.VISIBLE : View.GONE}" />
 
                 </LinearLayout>
 
@@ -124,43 +274,46 @@
                     android:orientation="vertical"
                     android:showDividers="middle">
 
+                    <!--Detail-->
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="?attr/listPreferredItemHeight"
                         android:background="?attr/selectableItemBackground"
                         android:gravity="center_vertical"
-                        android:onClick="onLinkClick"
+                        android:onClick="@{() -> presenter.linkClick(character.detail)}"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:tag="@{character.detail}"
                         android:text="@string/link_detail"
                         android:textAllCaps="true"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                         android:visibility="@{character.detail != null ? View.VISIBLE : View.GONE}"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/listPreferredItemHeight"
-                        android:background="?attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:onClick="onLinkClick"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:tag="@{character.wiki}"
-                        android:text="@string/link_wiki"
-                        android:textAllCaps="true"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        android:visibility="@{character.wiki != null ? View.VISIBLE : View.GONE}"/>
+                    <!--Wiki-->
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="?attr/listPreferredItemHeight"
                         android:background="?attr/selectableItemBackground"
                         android:gravity="center_vertical"
-                        android:onClick="onLinkClick"
+                        android:onClick="@{() -> presenter.linkClick(character.wiki)}"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:tag="@{character.comicLink}"
+                        android:text="@string/link_wiki"
+                        android:textAllCaps="true"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:visibility="@{character.wiki != null ? View.VISIBLE : View.GONE}"/>
+
+                    <!--Comic Link-->
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/listPreferredItemHeight"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:onClick="@{() -> presenter.linkClick(character.comicLink)}"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
                         android:text="@string/link_comic"
                         android:textAllCaps="true"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"

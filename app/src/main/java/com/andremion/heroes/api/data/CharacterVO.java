@@ -10,9 +10,10 @@ public class CharacterVO implements Serializable {
     private String mDescription;
     private String mThumbnail;
     private String mImage;
-    private List<ComicVO> mComics;
-    private List<SeriesVO> mSeries;
-    private List<StoryVO> mStories;
+    private List<SectionVO> mComics;
+    private List<SectionVO> mSeries;
+    private List<SectionVO> mStories;
+    private List<SectionVO> mEvents;
     private String mDetail;
     private String mWiki;
     private String mComicLink;
@@ -60,28 +61,36 @@ public class CharacterVO implements Serializable {
         mImage = image;
     }
 
-    public List<ComicVO> getComics() {
+    public List<SectionVO> getComics() {
         return mComics;
     }
 
-    public void setComics(List<ComicVO> comics) {
+    public void setComics(List<SectionVO> comics) {
         mComics = comics;
     }
 
-    public List<SeriesVO> getSeries() {
+    public List<SectionVO> getSeries() {
         return mSeries;
     }
 
-    public void setSeries(List<SeriesVO> series) {
+    public void setSeries(List<SectionVO> series) {
         mSeries = series;
     }
 
-    public List<StoryVO> getStories() {
+    public List<SectionVO> getStories() {
         return mStories;
     }
 
-    public void setStories(List<StoryVO> stories) {
+    public void setStories(List<SectionVO> stories) {
         mStories = stories;
+    }
+
+    public List<SectionVO> getEvents() {
+        return mEvents;
+    }
+
+    public void setEvents(List<SectionVO> events) {
+        mEvents = events;
     }
 
     public String getDetail() {

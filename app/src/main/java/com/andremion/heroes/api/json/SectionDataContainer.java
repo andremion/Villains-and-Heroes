@@ -1,7 +1,7 @@
 package com.andremion.heroes.api.json;
 
-public class CharacterDataContainer {
+public class SectionDataContainer {
     public int offset;
     public int total;
-    public CharacterData[] results;
+    public SectionData[] results;
 }

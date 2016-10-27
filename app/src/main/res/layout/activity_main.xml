@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.home.MainActivity">
+        tools:context=".ui.home.view.MainActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"

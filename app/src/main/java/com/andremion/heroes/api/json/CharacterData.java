@@ -6,9 +6,10 @@ public class CharacterData {
     public String name;
     public String description;
     public Image thumbnail;
-    public ComicList comics;
-    public SeriesList series;
-    public StoryList stories;
+    public SectionList comics;
+    public SectionList series;
+    public SectionList stories;
+    public SectionList events;
     public Url[] urls;
 
     public String getThumbnail() {

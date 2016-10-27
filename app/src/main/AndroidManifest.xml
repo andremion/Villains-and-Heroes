@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.andremion.heroes">
 
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -15,7 +13,7 @@
         android:theme="@style/AppTheme.NoActionBar">
 
         <!--Home-->
-        <activity android:name=".ui.home.MainActivity">
+        <activity android:name=".ui.home.view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,60 +23,33 @@
 
         <!--Character-->
         <activity
-            android:name=".ui.character.CharacterActivity"
-            android:parentActivityName=".ui.home.MainActivity">
+            android:name=".ui.character.view.CharacterActivity"
+            android:parentActivityName=".ui.home.view.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.home.MainActivity" />
+                android:value=".ui.home.view.MainActivity" />
         </activity>
 
         <!--Section-->
         <activity
-            android:name=".ui.section.SectionActivity"
-            android:parentActivityName=".ui.home.MainActivity"
+            android:name=".ui.section.view.SectionActivity"
+            android:parentActivityName=".ui.home.view.MainActivity"
             android:theme="@style/AppTheme.Translucent">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.home.MainActivity" />
+                android:value=".ui.home.view.MainActivity" />
         </activity>
 
         <!--Search-->
         <activity
-            android:name=".ui.search.SearchActivity"
+            android:name=".ui.search.view.SearchActivity"
             android:label=""
             android:launchMode="singleTop"
-            android:parentActivityName=".ui.home.MainActivity">
+            android:parentActivityName=".ui.home.view.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.home.MainActivity" />
+                android:value=".ui.home.view.MainActivity" />
         </activity>
-
-        <!--Data-->
-        <provider
-            android:name=".data.DataProvider"
-            android:authorities="@string/data_provider_authority"
-            android:enabled="true"
-            android:exported="false" />
-
-        <!-- Sync -->
-        <service android:name=".sync.auth.AuthenticatorService">
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator" />
-        </service>
-        <service android:name=".sync.service.SyncService">
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.content.SyncAdapter"
-                android:resource="@xml/syncadapter" />
-        </service>
 
     </application>
 

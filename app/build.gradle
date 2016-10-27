@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "24.0.3"
     dataBinding {
         enabled = true
     }
@@ -33,20 +33,18 @@ android.buildTypes.each { type ->
     type.buildConfigField "String", "MARVEL_PUBLIC_KEY", "\"$MARVEL_PUBLIC_KEY\""
 }
 
-def APPCOMPAT_VERSION = '24.2.+'
-def RETROFIT_VERSION = '2.1.+'
-
 dependencies {
-    compile "com.android.support:design:$APPCOMPAT_VERSION"
-    compile "com.android.support:recyclerview-v7:$APPCOMPAT_VERSION"
-    compile "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
-    compile "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile "com.android.support:design:$supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    compile "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+    compile "com.github.bumptech.glide:glide:$glideVersion"
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    androidTestCompile "com.android.support:support-annotations:$APPCOMPAT_VERSION"
+    testCompile "junit:junit:$junitVersion"
+    androidTestCompile "com.android.support:support-annotations:$supportLibraryVersion"
     androidTestCompile 'com.android.support.test:rules:0.5'
-    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.+') {
+    androidTestCompile("com.android.support.test.espresso:espresso-contrib:$espressoVersion") {
         exclude group: 'com.android.support'
     }
 }
