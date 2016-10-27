@@ -13,16 +13,16 @@ Android app that uses [Marvel Comics API](https://developer.marvel.com) and allo
 
 1. Put your secret Marvel keys in `marvelPrivateKey` and `marvelPublicKey` properties in your `gradle.properties` or set `MARVEL_PRIVATE_KEY` and `MARVEL_PUBLIC_KEY` variables in your Environment Variables
 
-## Libraries and tools used in the project
+## References, libraries and tools used in the project 
 
+* [Android Architecture Blueprints](https://github.com/googlesamples/android-architecture)
+Demonstrate possible ways to help with testing, maintaining and extending of an Android app using different architectural concepts and tools.
 * [Data Binding](https://developer.android.com/topic/libraries/data-binding)
 Write declarative layouts and minimize the glue code necessary to bind application logic and layouts
 * [Retrofit](http://square.github.io/retrofit)
 A type-safe HTTP client for Android and Java
 * [Gson](https://github.com/google/gson)
 A Java serialization/deserialization library that can convert Java Objects into JSON and back.
-* [SyncAdapter](http://developer.android.com/intl/pt-br/training/sync-adapters)
-Synchronises data between an Android device and web servers
 * [Design Support Library](http://developer.android.com/intl/pt-br/tools/support-library/features.html#design)
 The Design package provides APIs to support adding material design components and patterns to your apps.
 * [RecyclerView](http://developer.android.com/intl/pt-br/reference/android/support/v7/widget/RecyclerView.html)
