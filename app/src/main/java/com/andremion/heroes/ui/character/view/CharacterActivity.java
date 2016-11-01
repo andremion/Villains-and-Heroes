@@ -1,6 +1,8 @@
 package com.andremion.heroes.ui.character.view;
 
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -9,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,15 +38,27 @@ public class CharacterActivity extends AppCompatActivity implements CharacterCon
 
     public static final String EXTRA_CHARACTER = CharacterActivity.class.getPackage().getName() + ".extra.CHARACTER";
 
-    public static void start(Activity activity, View characterView, CharacterVO characterVO) {
+    public static void start(@NonNull Activity activity, @NonNull View characterView, @NonNull CharacterVO character) {
 
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(activity,
                         characterView, ViewCompat.getTransitionName(characterView));
         Intent intent = new Intent(activity, CharacterActivity.class);
-        intent.putExtra(EXTRA_CHARACTER, characterVO);
+        intent.putExtra(EXTRA_CHARACTER, character);
 
         ActivityCompat.startActivity(activity, intent, options.toBundle());
+    }
+
+    public static PendingIntent getPendingIntent(@NonNull Context context, @NonNull CharacterVO character, int id) {
+
+        Intent intent = new Intent(context, CharacterActivity.class);
+        intent.setAction(Integer.toString(id)); // Used to update all PendingIntent extras data for each widget
+        intent.putExtra(EXTRA_CHARACTER, character);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(intent); // Return to MainActivity
+
+        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private ActivityCharacterBinding mBinding;
