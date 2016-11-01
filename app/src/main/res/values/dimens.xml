@@ -5,6 +5,7 @@
 
     <dimen name="app_bar_height_extended">256dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="widget_margin">8dp</dimen>
 
     <dimen name="item_list_character_height">200dp</dimen>
     <dimen name="item_list_section_width">120dp</dimen>

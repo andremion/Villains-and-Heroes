@@ -1,3 +1,6 @@
+[![License Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=true)](http://www.apache.org/licenses/LICENSE-2.0)
+![minSdkVersion 14](https://img.shields.io/badge/minSdkVersion-14-red.svg?style=true)
+![compileSdkVersion 24](https://img.shields.io/badge/compileSdkVersion-24-yellow.svg?style=true)
 [![Build Status](https://travis-ci.org/andremion/Villains-and-Heroes.svg?branch=master)](https://travis-ci.org/andremion/Villains-and-Heroes)
 
 ![Icon](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/app/src/main/res/mipmap-hdpi/ic_launcher.png)
@@ -5,7 +8,7 @@
 
 Android app that uses [Marvel Comics API](https://developer.marvel.com) and allows developers everywhere to access information about Marvel's vast library of comics
 
-![Home](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/home-github.png)![Search](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/search-github.png)![Detail](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/detail-github.png)
+![Home](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/home-github.png)![Search](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/search-github.png)![Detail](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/detail-github.png)![Widget](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/widget-github.png)
 
 [![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.andremion.heroes)
 

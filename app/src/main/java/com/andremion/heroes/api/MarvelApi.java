@@ -4,6 +4,7 @@ import com.andremion.heroes.BuildConfig;
 import com.andremion.heroes.api.auth.AuthenticatorInterceptor;
 import com.andremion.heroes.api.data.CharacterVO;
 import com.andremion.heroes.api.data.SectionVO;
+import com.andremion.heroes.api.json.CharacterDataContainer;
 import com.andremion.heroes.api.json.CharacterDataWrapper;
 import com.andremion.heroes.api.json.SectionDataWrapper;
 import com.andremion.heroes.api.util.DataParser;
@@ -74,6 +75,29 @@ public class MarvelApi {
         }
         mLastSearchCall = mService.listCharacters(query, /* offset */ 0, MAX_FETCH_LIMIT);
         mLastSearchCall.enqueue(callback);
+    }
+
+    public int getTotalOfCharacters() throws IOException, MarvelException {
+        int limit = 1;
+        Response<CharacterDataWrapper> response = mService.listCharacters(null, /* offset */ 0, limit).execute();
+        if (response.isSuccessful()) {
+            CharacterDataContainer dataContainer = response.body().data;
+            if (dataContainer != null) {
+                return dataContainer.total;
+            }
+            return limit;
+        } else {
+            throw new MarvelException(response.code(), response.message());
+        }
+    }
+
+    public MarvelResult<CharacterVO> getCharacter(int offset) throws IOException, MarvelException {
+        Response<CharacterDataWrapper> response = mService.listCharacters(null, offset, /* limit */ 1).execute();
+        if (response.isSuccessful()) {
+            return DataParser.parse(response.body());
+        } else {
+            throw new MarvelException(response.code(), response.message());
+        }
     }
 
     public MarvelResult<SectionVO> listComics(long characterId, int offset) throws IOException, MarvelException {
