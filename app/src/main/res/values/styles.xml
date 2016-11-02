@@ -31,4 +31,12 @@
         <item name="android:shadowRadius">2</item>
     </style>
 
+    <style name="TextAppearance.Widget.Character.Name" parent="@style/TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
 </resources>
