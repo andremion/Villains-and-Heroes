@@ -3,5 +3,5 @@
     <color name="colorPrimary">#424242</color>
     <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#F44336</color>
-    <color name="windowBackgroundTranslucent">#80000000</color>
+    <color name="windowBackgroundTranslucent">#CE000000</color>
 </resources>
