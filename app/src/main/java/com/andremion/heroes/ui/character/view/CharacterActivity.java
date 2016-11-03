@@ -8,6 +8,7 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -97,6 +98,13 @@ public class CharacterActivity extends AppCompatActivity implements CharacterCon
         recyclerView.setHasFixedSize(true);
         SectionAdapter adapter = new SectionAdapter(this, this);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Nullable
+    @Override
+    public Intent getParentActivityIntent() {
+        //noinspection ConstantConditions
+        return super.getParentActivityIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     }
 
     @Override
