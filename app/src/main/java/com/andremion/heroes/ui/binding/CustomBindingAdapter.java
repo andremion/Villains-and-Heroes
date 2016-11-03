@@ -12,7 +12,6 @@ public class CustomBindingAdapter {
     public static void loadImage(ImageView imageView, String url) {
         Glide.with(imageView.getContext().getApplicationContext())
                 .load(url)
-                .centerCrop()
                 .error(R.mipmap.ic_launcher)
                 .into(imageView);
     }
