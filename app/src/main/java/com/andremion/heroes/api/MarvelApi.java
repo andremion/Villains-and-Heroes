@@ -33,7 +33,7 @@ public class MarvelApi {
     private MarvelApi() {
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(BuildConfig.DEBUG ? Level.BODY : Level.NONE);
+        logging.setLevel(BuildConfig.DEBUG ? Level.BODY : Level.BASIC);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthenticatorInterceptor())
