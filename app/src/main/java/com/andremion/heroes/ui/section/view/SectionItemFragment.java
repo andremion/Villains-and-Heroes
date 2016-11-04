@@ -2,6 +2,7 @@ package com.andremion.heroes.ui.section.view;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import com.andremion.heroes.R;
 import com.andremion.heroes.api.data.SectionVO;
 import com.andremion.heroes.databinding.FragmentSectionItemBinding;
+import com.andremion.heroes.ui.binding.ImageLoadingListener;
 
 public class SectionItemFragment extends Fragment {
 
@@ -42,12 +44,28 @@ public class SectionItemFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentSectionItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_section_item, container, false);
-        binding.setImageTransition(mImageTransitionName);
         binding.setSection(mItem);
+        binding.setImageTransition(mImageTransitionName);
+        binding.setImageListener(new ImageLoadingListener() {
+            @Override
+            public void onSuccess() {
+                startPostponedEnterTransition();
+            }
+
+            @Override
+            public void onFailed(@NonNull Exception e) {
+                startPostponedEnterTransition();
+            }
+        });
         return binding.getRoot();
+    }
+
+    private void startPostponedEnterTransition() {
+        if (getActivity() != null) {
+            getActivity().supportStartPostponedEnterTransition();
+        }
     }
 
 }
