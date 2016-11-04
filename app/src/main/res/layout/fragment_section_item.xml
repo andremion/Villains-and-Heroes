@@ -6,16 +6,16 @@
     <data>
 
         <variable
-            name="imageTransition"
-            type="java.lang.String" />
-
-        <variable
             name="section"
             type="com.andremion.heroes.api.data.SectionVO" />
 
         <variable
+            name="imageTransition"
+            type="java.lang.String" />
+
+        <variable
             name="imageListener"
-            type="com.bumptech.glide.request.RequestListener" />
+            type="com.andremion.heroes.ui.binding.ImageLoadingListener" />
 
     </data>
 

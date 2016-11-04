@@ -2,6 +2,7 @@ package com.andremion.heroes.ui.section.view;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +11,9 @@ import android.view.ViewGroup;
 import com.andremion.heroes.R;
 import com.andremion.heroes.api.data.SectionVO;
 import com.andremion.heroes.databinding.FragmentSectionItemBinding;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+import com.andremion.heroes.ui.binding.ImageLoadingListener;
 
-public class SectionItemFragment extends Fragment implements RequestListener<String, GlideDrawable> {
+public class SectionItemFragment extends Fragment {
 
     private static final String ARG_ITEM = "item";
     private static final String ARG_POSITION = "position";
@@ -47,22 +46,20 @@ public class SectionItemFragment extends Fragment implements RequestListener<Str
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentSectionItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_section_item, container, false);
-        binding.setImageTransition(mImageTransitionName);
         binding.setSection(mItem);
-        binding.setImageListener(this);
+        binding.setImageTransition(mImageTransitionName);
+        binding.setImageListener(new ImageLoadingListener() {
+            @Override
+            public void onSuccess() {
+                startPostponedEnterTransition();
+            }
+
+            @Override
+            public void onFailed(@NonNull Exception e) {
+                startPostponedEnterTransition();
+            }
+        });
         return binding.getRoot();
-    }
-
-    @Override
-    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-        startPostponedEnterTransition();
-        return false;
-    }
-
-    @Override
-    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-        startPostponedEnterTransition();
-        return false;
     }
 
     private void startPostponedEnterTransition() {
