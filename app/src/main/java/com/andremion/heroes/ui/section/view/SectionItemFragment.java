@@ -10,8 +10,11 @@ import android.view.ViewGroup;
 import com.andremion.heroes.R;
 import com.andremion.heroes.api.data.SectionVO;
 import com.andremion.heroes.databinding.FragmentSectionItemBinding;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
-public class SectionItemFragment extends Fragment {
+public class SectionItemFragment extends Fragment implements RequestListener<String, GlideDrawable> {
 
     private static final String ARG_ITEM = "item";
     private static final String ARG_POSITION = "position";
@@ -42,12 +45,30 @@ public class SectionItemFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentSectionItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_section_item, container, false);
         binding.setImageTransition(mImageTransitionName);
         binding.setSection(mItem);
+        binding.setImageListener(this);
         return binding.getRoot();
+    }
+
+    @Override
+    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+        startPostponedEnterTransition();
+        return false;
+    }
+
+    @Override
+    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+        startPostponedEnterTransition();
+        return false;
+    }
+
+    private void startPostponedEnterTransition() {
+        if (getActivity() != null) {
+            getActivity().supportStartPostponedEnterTransition();
+        }
     }
 
 }

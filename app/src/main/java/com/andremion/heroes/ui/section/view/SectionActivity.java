@@ -64,6 +64,8 @@ public class SectionActivity extends AppCompatActivity implements SectionContrac
 
         binding.setAttribution(attribution);
         binding.setPresenter(mPresenter);
+
+        supportPostponeEnterTransition();
     }
 
     @Override
