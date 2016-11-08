@@ -21,14 +21,13 @@ public class MainPresenter extends AbsPresenter<MainContract.View> implements Ma
     private String mAttribution;
     private boolean mHasMore;
 
-    public MainPresenter() {
-        mMarvelApi = MarvelApi.getInstance();
+    public MainPresenter(@NonNull MarvelApi marvelApi) {
+        mMarvelApi = marvelApi;
         mEntries = new ArrayList<>();
     }
 
     @Override
-    public void attachView(@NonNull MainContract.View view) {
-        super.attachView(view);
+    public void initScreen() {
         if (!mView.showInfoDialog()) {
             if (mEntries.isEmpty()) {
                 loadCharacters(0);
@@ -74,8 +73,8 @@ public class MainPresenter extends AbsPresenter<MainContract.View> implements Ma
     }
 
     @Override
-    public void characterClick(@NonNull View heroView, @NonNull CharacterVO characterVO) {
-        mView.openCharacter(heroView, characterVO);
+    public void characterClick(@NonNull View heroView, @NonNull CharacterVO character) {
+        mView.openCharacter(heroView, character);
     }
 
     @Override

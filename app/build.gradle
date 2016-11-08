@@ -34,14 +34,19 @@ android.buildTypes.each { type ->
 }
 
 dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:design:$supportLibraryVersion"
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     compile "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
     compile "com.github.bumptech.glide:glide:$glideVersion"
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+
     testCompile "junit:junit:$junitVersion"
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
+    testCompile "org.powermock:powermock-module-junit4:$powermockVersion"
+    testCompile "org.powermock:powermock-api-mockito:$powermockVersion"
+
     androidTestCompile "com.android.support:support-annotations:$supportLibraryVersion"
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile("com.android.support.test.espresso:espresso-contrib:$espressoVersion") {

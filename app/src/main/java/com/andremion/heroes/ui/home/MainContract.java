@@ -29,6 +29,8 @@ public interface MainContract {
 
     interface Actions {
 
+        void initScreen();
+
         void loadCharacters(int offset);
 
         void characterClick(@NonNull android.view.View heroView, @NonNull CharacterVO character);
