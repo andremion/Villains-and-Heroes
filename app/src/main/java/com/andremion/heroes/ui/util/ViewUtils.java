@@ -30,6 +30,7 @@ public class ViewUtils {
                             .setListener(new ViewPropertyAnimatorListenerAdapter() {
                                 @Override
                                 public void onAnimationEnd(View view) {
+                                    ViewCompat.animate(view).setListener(null);
                                     view.setVisibility(View.INVISIBLE);
                                 }
                             }).start();

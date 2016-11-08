@@ -82,4 +82,10 @@ public class MainPresenter extends AbsPresenter<MainContract.View> implements Ma
         mView.openSearch();
     }
 
+    @Override
+    public void refresh() {
+        mEntries.clear();
+        loadCharacters(0);
+    }
+
 }

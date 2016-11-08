@@ -224,4 +224,36 @@ public class MainPresenterTest {
 
     }
 
+    @Test
+    public void refresh() {
+
+        mPresenter.refresh();
+
+        final int OFFSET = 0;
+        final int TOTAL = MarvelApi.MAX_FETCH_LIMIT;
+        final List<CharacterVO> ENTRIES = Arrays.asList(mock(CharacterVO.class), mock(CharacterVO.class));
+        final String ATTRIBUTION = "";
+        final boolean HAS_MORE = true;
+
+        MarvelResult<CharacterVO> result = new MarvelResult<>();
+        result.setOffset(OFFSET);
+        result.setTotal(TOTAL);
+        result.setEntries(ENTRIES);
+        result.setAttribution(ATTRIBUTION);
+
+        CharacterDataWrapper dataWrapper = any(CharacterDataWrapper.class);
+        when(DataParser.parse(dataWrapper)).thenReturn(result);
+
+        InOrder inOrder = inOrder(mView);
+        inOrder.verify(mView).showProgress();
+
+        verify(mMarvelApi).listCharacters(eq(OFFSET), mListCharactersCallback.capture());
+        mListCharactersCallback.getValue().onResult(dataWrapper);
+
+        inOrder.verify(mView).showResult(ENTRIES);
+        inOrder.verify(mView).showAttribution(ATTRIBUTION);
+        inOrder.verify(mView).stopProgress(HAS_MORE);
+
+    }
+
 }

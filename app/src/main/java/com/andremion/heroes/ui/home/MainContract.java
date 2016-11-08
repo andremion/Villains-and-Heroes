@@ -36,5 +36,7 @@ public interface MainContract {
         void characterClick(@NonNull android.view.View heroView, @NonNull CharacterVO character);
 
         void searchClick();
+
+        void refresh();
     }
 }

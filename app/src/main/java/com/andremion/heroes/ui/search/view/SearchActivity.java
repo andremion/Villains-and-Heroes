@@ -21,6 +21,7 @@ import com.andremion.heroes.ui.character.view.CharacterActivity;
 import com.andremion.heroes.ui.home.view.CharacterAdapter;
 import com.andremion.heroes.ui.search.SearchContract;
 import com.andremion.heroes.ui.search.SearchPresenter;
+import com.andremion.heroes.ui.util.StringUtils;
 
 import java.util.List;
 
@@ -108,7 +109,7 @@ public class SearchActivity extends AppCompatActivity
 
     @Override
     public void showError(Throwable e) {
-        Snackbar.make(mBinding.toolbar, e.getMessage(), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mBinding.toolbar, StringUtils.getApiErrorMessage(this, e), Snackbar.LENGTH_LONG).show();
     }
 
     @Override

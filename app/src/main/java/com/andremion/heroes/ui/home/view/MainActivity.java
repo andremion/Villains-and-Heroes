@@ -18,7 +18,6 @@ import android.view.View;
 
 import com.andremion.heroes.R;
 import com.andremion.heroes.api.MarvelApi;
-import com.andremion.heroes.api.MarvelException;
 import com.andremion.heroes.api.data.CharacterVO;
 import com.andremion.heroes.databinding.ActivityMainBinding;
 import com.andremion.heroes.databinding.ItemListCharacterBinding;
@@ -27,9 +26,9 @@ import com.andremion.heroes.ui.character.view.CharacterActivity;
 import com.andremion.heroes.ui.home.MainContract;
 import com.andremion.heroes.ui.home.MainPresenter;
 import com.andremion.heroes.ui.search.view.SearchActivity;
+import com.andremion.heroes.ui.util.StringUtils;
 import com.andremion.heroes.ui.util.ViewUtils;
 
-import java.io.IOException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -62,6 +61,8 @@ public class MainActivity extends AppCompatActivity
         }
         mPresenter.attachView(this);
         mPresenter.initScreen();
+
+        mBinding.setPresenter(mPresenter);
     }
 
     @Override
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void showProgress() {
+        mCharacterAdapter.setLoading(true);
         mCharacterAdapter.setHasMore(true);
     }
 
@@ -139,6 +141,7 @@ public class MainActivity extends AppCompatActivity
     public void stopProgress(boolean hasMore) {
         mCharacterAdapter.setLoading(false);
         mCharacterAdapter.setHasMore(hasMore);
+        mBinding.swipeRefresh.setRefreshing(false);
     }
 
     @Override
@@ -150,23 +153,23 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void showResult(@NonNull List<CharacterVO> entries) {
         mCharacterAdapter.setItems(entries);
+
+        if (mBinding.error.isShown()) {
+            mBinding.error.setText(null);
+            ViewUtils.fadeView(mBinding.recycler, true, true);
+            ViewUtils.fadeView(mBinding.error, false, true);
+        }
     }
 
     @Override
     public void showError(@NonNull Throwable e) {
-        final String msg;
-        if (e instanceof IOException) {
-            msg = getString(R.string.connection_error);
-        } else if (e instanceof MarvelException) {
-            msg = getString(R.string.server_error);
-        } else {
-            msg = "";
-        }
-        if (mCharacterAdapter.getItemCount() > 1) {
+        String msg = StringUtils.getApiErrorMessage(this, e);
+        if (mCharacterAdapter.getItemCount() > 1) { // If user already has items shown
             Snackbar.make(mBinding.recycler, msg, Snackbar.LENGTH_LONG).show();
         } else {
             boolean animate = !TextUtils.equals(mBinding.error.getText(), msg);
             boolean showError = !TextUtils.isEmpty(msg);
+            mBinding.error.setText(msg);
             ViewUtils.fadeView(mBinding.recycler, !showError, animate);
             ViewUtils.fadeView(mBinding.error, showError, animate);
         }
