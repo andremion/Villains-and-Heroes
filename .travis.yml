@@ -48,7 +48,6 @@ before_script:
 
 #Build, and run tests
 script:
-  - ./gradlew check
   - ./gradlew jacocoTestReport
 
 #Codecov
