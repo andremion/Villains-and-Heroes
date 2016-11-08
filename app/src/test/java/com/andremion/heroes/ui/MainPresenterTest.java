@@ -1,20 +1,16 @@
 package com.andremion.heroes.ui;
 
+import android.view.View;
+
 import com.andremion.heroes.api.MarvelApi;
 import com.andremion.heroes.api.MarvelCallback;
 import com.andremion.heroes.api.MarvelResult;
 import com.andremion.heroes.api.data.CharacterVO;
-import com.andremion.heroes.api.json.CharacterData;
-import com.andremion.heroes.api.json.CharacterDataContainer;
 import com.andremion.heroes.api.json.CharacterDataWrapper;
-import com.andremion.heroes.api.json.SectionList;
-import com.andremion.heroes.api.json.SectionSummary;
-import com.andremion.heroes.api.json.Url;
 import com.andremion.heroes.api.util.DataParser;
 import com.andremion.heroes.ui.home.MainContract;
 import com.andremion.heroes.ui.home.MainPresenter;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,16 +19,16 @@ import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
@@ -60,38 +56,22 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void initScreenTest() {
+    public void initScreen_ResultEntries() {
 
         final int OFFSET = 0;
         final int TOTAL = MarvelApi.MAX_FETCH_LIMIT;
-        final List<CharacterVO> ENTRIES = new ArrayList<>();
+        final List<CharacterVO> ENTRIES = Arrays.asList(mock(CharacterVO.class), mock(CharacterVO.class));
         final String ATTRIBUTION = "";
+        final boolean HAS_MORE = true;
+
         MarvelResult<CharacterVO> result = new MarvelResult<>();
         result.setOffset(OFFSET);
         result.setTotal(TOTAL);
         result.setEntries(ENTRIES);
         result.setAttribution(ATTRIBUTION);
-        when(DataParser.parse(any(CharacterDataWrapper.class))).thenReturn(result);
 
-
-        final boolean HAS_MORE = true;
-        CharacterDataWrapper data = new CharacterDataWrapper();
-        data.attributionText = ATTRIBUTION;
-        CharacterDataContainer dataContainer = new CharacterDataContainer();
-        dataContainer.offset = OFFSET;
-        dataContainer.total = TOTAL;
-        CharacterData characterData = Mockito.mock(CharacterData.class);
-        characterData.urls = new Url[0];
-        characterData.comics = new SectionList();
-        characterData.comics.items = new SectionSummary[0];
-        characterData.series = new SectionList();
-        characterData.series.items = new SectionSummary[0];
-        characterData.stories = new SectionList();
-        characterData.stories.items = new SectionSummary[0];
-        characterData.events = new SectionList();
-        characterData.events.items = new SectionSummary[0];
-        dataContainer.results = new CharacterData[]{characterData};
-        data.data = dataContainer;
+        CharacterDataWrapper dataWrapper = any(CharacterDataWrapper.class);
+        when(DataParser.parse(dataWrapper)).thenReturn(result);
 
         mPresenter.initScreen();
 
@@ -100,7 +80,7 @@ public class MainPresenterTest {
         inOrder.verify(mView).showProgress();
 
         verify(mMarvelApi).listCharacters(eq(OFFSET), mListCharactersCallback.capture());
-        mListCharactersCallback.getValue().onResult(any(CharacterDataWrapper.class));
+        mListCharactersCallback.getValue().onResult(dataWrapper);
 
         inOrder.verify(mView).showResult(ENTRIES);
         inOrder.verify(mView).showAttribution(ATTRIBUTION);
@@ -108,9 +88,140 @@ public class MainPresenterTest {
 
     }
 
-    @After
-    public void tearDown() {
+    @Test
+    public void initScreen_ResultCached() {
+
+        final int OFFSET = 0;
+        final int TOTAL = MarvelApi.MAX_FETCH_LIMIT;
+        final List<CharacterVO> ENTRIES = Arrays.asList(mock(CharacterVO.class), mock(CharacterVO.class));
+        final String ATTRIBUTION = "";
+        final boolean HAS_MORE = true;
+
+        MarvelResult<CharacterVO> result = new MarvelResult<>();
+        result.setOffset(OFFSET);
+        result.setTotal(TOTAL);
+        result.setEntries(ENTRIES);
+        result.setAttribution(ATTRIBUTION);
+
+        CharacterDataWrapper dataWrapper = any(CharacterDataWrapper.class);
+        when(DataParser.parse(dataWrapper)).thenReturn(result);
+
+        mPresenter.initScreen();
+
+        InOrder inOrder = inOrder(mView);
+        inOrder.verify(mView).showInfoDialog();
+        inOrder.verify(mView).showProgress();
+
+        verify(mMarvelApi).listCharacters(eq(OFFSET), mListCharactersCallback.capture());
+        mListCharactersCallback.getValue().onResult(dataWrapper);
+
+        inOrder.verify(mView).showResult(ENTRIES);
+        inOrder.verify(mView).showAttribution(ATTRIBUTION);
+        inOrder.verify(mView).stopProgress(HAS_MORE);
+
+        mPresenter.initScreen();
+
+        inOrder.verify(mView).showInfoDialog();
+        inOrder.verify(mView).showResult(ENTRIES);
+        inOrder.verify(mView).showAttribution(ATTRIBUTION);
+        inOrder.verify(mView).stopProgress(HAS_MORE);
+
+    }
+
+    @Test
+    public void initScreen_ResultDetached() {
+
+        final int OFFSET = 0;
+        final int TOTAL = MarvelApi.MAX_FETCH_LIMIT;
+        final List<CharacterVO> ENTRIES = Arrays.asList(mock(CharacterVO.class), mock(CharacterVO.class));
+        final String ATTRIBUTION = "";
+
+        MarvelResult<CharacterVO> result = new MarvelResult<>();
+        result.setOffset(OFFSET);
+        result.setTotal(TOTAL);
+        result.setEntries(ENTRIES);
+        result.setAttribution(ATTRIBUTION);
+
+        CharacterDataWrapper dataWrapper = any(CharacterDataWrapper.class);
+        when(DataParser.parse(dataWrapper)).thenReturn(result);
+
+        mPresenter.initScreen();
+
+        InOrder inOrder = inOrder(mView);
+        inOrder.verify(mView).showInfoDialog();
+        inOrder.verify(mView).showProgress();
+
         mPresenter.detachView();
+
+        verify(mMarvelApi).listCharacters(eq(OFFSET), mListCharactersCallback.capture());
+        mListCharactersCallback.getValue().onResult(dataWrapper);
+
+    }
+
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+    @Test
+    public void initScreen_Error() {
+
+        final int OFFSET = 0;
+        final boolean HAS_MORE = false;
+
+        Throwable error = mock(Throwable.class);
+
+        mPresenter.initScreen();
+
+        InOrder inOrder = inOrder(mView);
+        inOrder.verify(mView).showInfoDialog();
+        inOrder.verify(mView).showProgress();
+
+        verify(mMarvelApi).listCharacters(eq(OFFSET), mListCharactersCallback.capture());
+        mListCharactersCallback.getValue().onError(error);
+
+        inOrder.verify(mView).showError(error);
+        inOrder.verify(mView).stopProgress(HAS_MORE);
+
+    }
+
+    @Test
+    public void initScreen_ErrorDetached() {
+
+        final int OFFSET = 0;
+
+        Throwable error = mock(Throwable.class);
+
+        mPresenter.initScreen();
+
+        InOrder inOrder = inOrder(mView);
+        inOrder.verify(mView).showInfoDialog();
+        inOrder.verify(mView).showProgress();
+
+        mPresenter.detachView();
+
+        verify(mMarvelApi).listCharacters(eq(OFFSET), mListCharactersCallback.capture());
+        mListCharactersCallback.getValue().onError(error);
+
+    }
+
+    @Test
+    public void characterClick() {
+
+        View heroView = mock(View.class);
+        CharacterVO character = mock(CharacterVO.class);
+
+        mPresenter.characterClick(heroView, character);
+
+        InOrder inOrder = inOrder(mView);
+        inOrder.verify(mView).openCharacter(heroView, character);
+
+    }
+
+    @Test
+    public void searchClick() {
+
+        mPresenter.searchClick();
+
+        InOrder inOrder = inOrder(mView);
+        inOrder.verify(mView).openSearch();
+
     }
 
 }

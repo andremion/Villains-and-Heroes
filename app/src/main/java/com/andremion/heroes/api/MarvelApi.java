@@ -33,11 +33,13 @@ public class MarvelApi {
 
     private MarvelApi() {
 
+        AuthenticatorInterceptor authenticator = new AuthenticatorInterceptor();
+
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(BuildConfig.DEBUG ? Level.BODY : Level.BASIC);
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new AuthenticatorInterceptor())
+                .addInterceptor(authenticator)
                 .addInterceptor(logging)
                 .build();
 
@@ -138,6 +140,15 @@ public class MarvelApi {
 
     public void listStories(long characterId, int offset, MarvelCallback<SectionDataWrapper> callback) {
         mService.listStories(characterId, offset, MAX_FETCH_LIMIT).enqueue(callback);
+    }
+
+    public MarvelResult<SectionVO> listEvents(long characterId, int offset) throws IOException, MarvelException {
+        Response<SectionDataWrapper> response = mService.listEvents(characterId, offset, MAX_FETCH_LIMIT).execute();
+        if (response.isSuccessful()) {
+            return DataParser.parse(response.body());
+        } else {
+            throw new MarvelException(response.code(), response.message());
+        }
     }
 
     public void listEvents(long characterId, int offset, MarvelCallback<SectionDataWrapper> callback) {

@@ -73,8 +73,8 @@ public class MainPresenter extends AbsPresenter<MainContract.View> implements Ma
     }
 
     @Override
-    public void characterClick(@NonNull View heroView, @NonNull CharacterVO characterVO) {
-        mView.openCharacter(heroView, characterVO);
+    public void characterClick(@NonNull View heroView, @NonNull CharacterVO character) {
+        mView.openCharacter(heroView, character);
     }
 
     @Override

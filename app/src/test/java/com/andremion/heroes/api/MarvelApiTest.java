@@ -1,8 +1,5 @@
-package com.andremion.heroes;
+package com.andremion.heroes.api;
 
-import com.andremion.heroes.api.MarvelApi;
-import com.andremion.heroes.api.MarvelException;
-import com.andremion.heroes.api.MarvelResult;
 import com.andremion.heroes.api.data.CharacterVO;
 import com.andremion.heroes.api.data.SectionVO;
 
@@ -15,7 +12,7 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-public class MarvelApiUnitTest {
+public class MarvelApiTest {
 
     private static final int OFFSET = 0;
     private static final long CHARACTER_ID = 1011334;
@@ -84,6 +81,21 @@ public class MarvelApiUnitTest {
         assertNotNull(entries);
 
         // Get the stories list and check for not empty
+        assertFalse(entries.isEmpty());
+    }
+
+    @Test
+    public void listEventsByCharacter() throws IOException, MarvelException {
+
+        // Fetch the events result and check for not null
+        MarvelResult<SectionVO> result = mMarvelApi.listEvents(CHARACTER_ID, OFFSET);
+        assertNotNull(result);
+
+        // Get the events list and check for not null
+        List<SectionVO> entries = result.getEntries();
+        assertNotNull(entries);
+
+        // Get the events list and check for not empty
         assertFalse(entries.isEmpty());
     }
 
