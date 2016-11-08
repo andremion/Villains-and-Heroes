@@ -2,6 +2,7 @@
 ![minSdkVersion 14](https://img.shields.io/badge/minSdkVersion-14-red.svg?style=true)
 ![compileSdkVersion 24](https://img.shields.io/badge/compileSdkVersion-24-yellow.svg?style=true)
 [![Build Status](https://travis-ci.org/andremion/Villains-and-Heroes.svg?branch=master)](https://travis-ci.org/andremion/Villains-and-Heroes)
+[![codecov](https://codecov.io/gh/andremion/Villains-and-Heroes/branch/master/graph/badge.svg)](https://codecov.io/gh/andremion/Villains-and-Heroes)
 
 ![Icon](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/app/src/main/res/mipmap-hdpi/ic_launcher.png)
 # Villains & Heroes
