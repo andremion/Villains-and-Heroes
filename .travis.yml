@@ -47,4 +47,9 @@ before_script:
   - adb shell input keyevent 82 &
 
 #Build, and run tests
-script: ./gradlew test
+script:
+  - ./gradlew jacocoTestReport
+
+#Codecov
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
