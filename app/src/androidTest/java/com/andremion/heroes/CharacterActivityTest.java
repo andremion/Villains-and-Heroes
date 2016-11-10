@@ -27,8 +27,7 @@ public class CharacterActivityTest {
         @Override
         protected Intent getActivityIntent() {
             Intent intent = super.getActivityIntent();
-            // TODO: 03/10/2016 Update this
-            intent.putExtra(CharacterActivity.EXTRA_CHARACTER, DataConstants.CHARACTER_ID);
+            intent.putExtra(CharacterActivity.EXTRA_CHARACTER, DataConstants.CHARACTER);
             return intent;
         }
     };
