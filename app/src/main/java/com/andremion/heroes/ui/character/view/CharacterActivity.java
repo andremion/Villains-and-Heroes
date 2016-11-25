@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.andremion.heroes.R;
 import com.andremion.heroes.api.data.CharacterVO;
@@ -131,6 +132,30 @@ public class CharacterActivity extends AppCompatActivity implements CharacterCon
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+
+        int position = SectionActivity.getPosition(resultCode, data);
+        if (position != 0
+                && mBinding.recyclerComics.getAdapter().getItemCount() > 0
+                && mBinding.recyclerComics.findViewHolderForAdapterPosition(position) == null) {
+
+            mBinding.recyclerComics.scrollToPosition(position);
+
+            supportPostponeEnterTransition();
+
+            mBinding.recyclerComics.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    mBinding.recyclerComics.getViewTreeObserver().removeOnPreDrawListener(this);
+                    supportStartPostponedEnterTransition();
+                    return true;
+                }
+            });
+        }
+
     }
 
     @Override
