@@ -9,7 +9,7 @@
 ![Icon](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/app/src/main/res/mipmap-hdpi/ic_launcher.png)
 # Villains & Heroes
 
-Android app that uses [Marvel Comics API](https://developer.marvel.com) and allows developers everywhere to access information about Marvel's vast library of comics. It was built using [MVP](http://antonioleiva.com/mvp-android/) architectural approach
+Android app built with [MVP](http://antonioleiva.com/mvp-android/) architectural approach and uses [Marvel Comics API](https://developer.marvel.com) that allows developers everywhere to access information about Marvel's vast library of comics.
 
 ![Home](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/home-github.png)![Search](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/search-github.png)![Detail](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/detail-github.png)![Widget](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/widget-github.png)
 
