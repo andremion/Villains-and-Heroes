@@ -1,6 +1,6 @@
 [![License Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=true)](http://www.apache.org/licenses/LICENSE-2.0)
 ![minSdkVersion 14](https://img.shields.io/badge/minSdkVersion-14-red.svg?style=true)
-![compileSdkVersion 24](https://img.shields.io/badge/compileSdkVersion-24-yellow.svg?style=true)
+![compileSdkVersion 25](https://img.shields.io/badge/compileSdkVersion-25-yellow.svg?style=true)
 [![Build Status](https://travis-ci.org/andremion/Villains-and-Heroes.svg?branch=master)](https://travis-ci.org/andremion/Villains-and-Heroes)
 [![codecov](https://codecov.io/gh/andremion/Villains-and-Heroes/branch/master/graph/badge.svg)](https://codecov.io/gh/andremion/Villains-and-Heroes)
 

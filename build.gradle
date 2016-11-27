@@ -16,7 +16,7 @@ allprojects {
     }
     project.ext {
 
-        supportLibraryVersion = '24.2.+'
+        supportLibraryVersion = '25.0.+'
         okhttpVersion = '3.3.+'
         retrofitVersion = '2.1.+'
         glideVersion = '3.7.0'
