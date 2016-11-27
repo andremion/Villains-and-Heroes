@@ -24,7 +24,8 @@
         <!--Character-->
         <activity
             android:name=".ui.character.view.CharacterActivity"
-            android:parentActivityName=".ui.home.view.MainActivity">
+            android:parentActivityName=".ui.home.view.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar.TranslucentStatusBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.home.view.MainActivity" />
