@@ -14,10 +14,16 @@ import com.andremion.heroes.ui.adapter.ArrayAdapter;
 public class SectionAdapter extends ArrayAdapter<SectionVO, SectionAdapter.ViewHolder> {
 
     private final String mImageTransitionName;
+    private final int mType;
 
-    public SectionAdapter(Context context, OnItemClickListener listener) {
+    public SectionAdapter(Context context, @SectionVO.Type int type, OnItemClickListener listener) {
         super(listener);
-        mImageTransitionName = context.getString(R.string.transition_section_image);
+        mImageTransitionName = context.getString(R.string.transition_section_image) + type;
+        mType = type;
+    }
+
+    public int getType() {
+        return mType;
     }
 
     @Override
