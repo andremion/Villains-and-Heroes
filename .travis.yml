@@ -16,16 +16,16 @@ android:
     - build-tools-24.0.3
 
     # The SDK version used to compile your project
-    - android-24
+    - android-25
 
     # Additional components
     - extra-android-m2repository
 
     # Specify system images to run emulators during the tests
     - sys-img-armeabi-v7a-android-15
-    - sys-img-armeabi-v7a-android-24
+    - sys-img-armeabi-v7a-android-25
     - sys-img-x86-android-15
-    - sys-img-x86-android-24
+    - sys-img-x86-android-25
 
 # Caching in Gradle means that to avoid uploading the cache after every build
 before_cache:
