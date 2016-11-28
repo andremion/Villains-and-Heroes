@@ -12,11 +12,13 @@ import java.util.List;
 
 public class SectionPagerAdapter extends FragmentStatePagerAdapter {
 
+    private int mType;
     private final List<SectionVO> mItems;
     private final SparseArray<Fragment> mFragments;
 
-    public SectionPagerAdapter(FragmentManager fm, List<SectionVO> items) {
+    public SectionPagerAdapter(FragmentManager fm, @SectionVO.Type int type, List<SectionVO> items) {
         super(fm);
+        mType = type;
         mItems = items;
         mFragments = new SparseArray<>();
     }
@@ -27,7 +29,7 @@ public class SectionPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return SectionItemFragment.newInstance(mItems.get(position), position);
+        return SectionItemFragment.newInstance(mType, mItems.get(position), position);
     }
 
     @Override

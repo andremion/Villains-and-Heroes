@@ -167,8 +167,8 @@ public class CharacterPresenter extends AbsPresenter<CharacterContract.View> imp
     }
 
     @Override
-    public void sectionClick(@NonNull View heroView, @NonNull List<SectionVO> entries, int position) {
-        mView.openSection(heroView, mAttribution, entries, position);
+    public void sectionClick(@SectionVO.Type int type, @NonNull View heroView, @NonNull List<SectionVO> entries, int position) {
+        mView.openSection(type, heroView, mAttribution, entries, position);
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.andremion.heroes.ui.binding.ImageLoadingListener;
 
 public class SectionItemFragment extends Fragment {
 
+    private static final String ARG_TYPE = "type";
     private static final String ARG_ITEM = "item";
     private static final String ARG_POSITION = "position";
 
@@ -24,9 +25,10 @@ public class SectionItemFragment extends Fragment {
     public SectionItemFragment() {
     }
 
-    public static SectionItemFragment newInstance(SectionVO item, int position) {
+    public static SectionItemFragment newInstance(@SectionVO.Type int type, SectionVO item, int position) {
         SectionItemFragment fragment = new SectionItemFragment();
         Bundle args = new Bundle();
+        args.putInt(ARG_TYPE, type);
         args.putSerializable(ARG_ITEM, item);
         args.putInt(ARG_POSITION, position);
         fragment.setArguments(args);
@@ -39,6 +41,7 @@ public class SectionItemFragment extends Fragment {
         if (getArguments() != null) {
             mItem = (SectionVO) getArguments().get(ARG_ITEM);
             mImageTransitionName = getString(R.string.transition_section_image) +
+                    getArguments().getInt(ARG_TYPE) +
                     getArguments().getInt(ARG_POSITION);
         }
     }
