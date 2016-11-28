@@ -25,7 +25,7 @@ public interface CharacterContract {
 
         void showError(@NonNull Throwable e);
 
-        void openSection(@NonNull android.view.View heroView, String attribution, @NonNull List<SectionVO> entries, int position);
+        void openSection(@SectionVO.Type int type, @NonNull android.view.View heroView, String attribution, @NonNull List<SectionVO> entries, int position);
 
         void openLink(@NonNull String url);
 
@@ -42,7 +42,7 @@ public interface CharacterContract {
 
         void loadEvents(long characterId, int offset);
 
-        void sectionClick(@NonNull android.view.View heroView, @NonNull List<SectionVO> entries, int position);
+        void sectionClick(@SectionVO.Type int type, @NonNull android.view.View heroView, @NonNull List<SectionVO> entries, int position);
 
         void linkClick(@NonNull String url);
 

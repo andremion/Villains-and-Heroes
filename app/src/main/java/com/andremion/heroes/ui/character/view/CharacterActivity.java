@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.andremion.heroes.R;
 import com.andremion.heroes.api.data.CharacterVO;
@@ -74,10 +75,10 @@ public class CharacterActivity extends AppCompatActivity implements CharacterCon
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setupSectionView(mBinding.recyclerComics);
-        setupSectionView(mBinding.recyclerSeries);
-        setupSectionView(mBinding.recyclerStories);
-        setupSectionView(mBinding.recyclerEvents);
+        setupSectionView(mBinding.recyclerComics, SectionVO.TYPE_COMIC);
+        setupSectionView(mBinding.recyclerSeries, SectionVO.TYPE_SERIES);
+        setupSectionView(mBinding.recyclerStories, SectionVO.TYPE_STORY);
+        setupSectionView(mBinding.recyclerEvents, SectionVO.TYPE_EVENT);
 
         CharacterVO character = (CharacterVO) getIntent().getExtras().get(EXTRA_CHARACTER);
         assert character != null;
@@ -92,11 +93,11 @@ public class CharacterActivity extends AppCompatActivity implements CharacterCon
         mBinding.setPresenter(mPresenter);
     }
 
-    private void setupSectionView(RecyclerView recyclerView) {
+    private void setupSectionView(RecyclerView recyclerView, @SectionVO.Type int type) {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
-        SectionAdapter adapter = new SectionAdapter(this, this);
+        SectionAdapter adapter = new SectionAdapter(this, type, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -134,8 +135,53 @@ public class CharacterActivity extends AppCompatActivity implements CharacterCon
     }
 
     @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+
+        int type = SectionActivity.getType(resultCode, data);
+        int position = SectionActivity.getPosition(resultCode, data);
+
+        final RecyclerView recyclerView;
+        switch (type) {
+            case SectionVO.TYPE_COMIC:
+                recyclerView = mBinding.recyclerComics;
+                break;
+            case SectionVO.TYPE_SERIES:
+                recyclerView = mBinding.recyclerSeries;
+                break;
+            case SectionVO.TYPE_STORY:
+                recyclerView = mBinding.recyclerStories;
+                break;
+            case SectionVO.TYPE_EVENT:
+                recyclerView = mBinding.recyclerEvents;
+                break;
+            default:
+                recyclerView = null;
+        }
+
+        if (position != SectionActivity.EXTRA_NOT_FOUND && recyclerView != null
+                && recyclerView.getAdapter().getItemCount() > 0
+                && recyclerView.findViewHolderForAdapterPosition(position) == null) {
+
+            recyclerView.scrollToPosition(position);
+
+            supportPostponeEnterTransition();
+
+            recyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    recyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    supportStartPostponedEnterTransition();
+                    return true;
+                }
+            });
+        }
+
+    }
+
+    @Override
     public void onItemClick(ArrayAdapter<SectionVO, SectionAdapter.ViewHolder> adapter, ItemListSectionBinding binding, int position) {
-        mPresenter.sectionClick(binding.image, adapter.getItems(), position);
+        SectionAdapter sectionAdapter = (SectionAdapter) adapter;
+        mPresenter.sectionClick(sectionAdapter.getType(), binding.image, adapter.getItems(), position);
     }
 
     @Override
@@ -178,8 +224,8 @@ public class CharacterActivity extends AppCompatActivity implements CharacterCon
     }
 
     @Override
-    public void openSection(@NonNull View heroView, String attribution, @NonNull List<SectionVO> entries, int position) {
-        SectionActivity.start(this, heroView, attribution, entries, position);
+    public void openSection(int type, @NonNull View heroView, String attribution, @NonNull List<SectionVO> entries, int position) {
+        SectionActivity.start(this, type, heroView, attribution, entries, position);
     }
 
     @Override

@@ -15,7 +15,7 @@ public class CustomBindingAdapter {
         Glide.with(imageView.getContext().getApplicationContext())
                 .load(url)
                 .listener(listener)
-                .error(R.mipmap.ic_launcher)
+                .error(R.drawable.ic_no_image)
                 .into(imageView);
     }
 
