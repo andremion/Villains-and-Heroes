@@ -16,7 +16,9 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,6 +101,8 @@ public class CharacterActivity extends AppCompatActivity implements CharacterCon
         recyclerView.setHasFixedSize(true);
         SectionAdapter adapter = new SectionAdapter(this, type, this);
         recyclerView.setAdapter(adapter);
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView);
     }
 
     @Nullable
