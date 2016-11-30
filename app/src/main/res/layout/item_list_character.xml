@@ -14,6 +14,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_list_character_height"
+        android:clipChildren="false"
         android:foreground="?attr/selectableItemBackground">
 
         <ImageView

@@ -8,11 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@drawable/bg_main</item>
         <item name="android:windowSharedElementEnterTransition" tools:ignore="NewApi">
-            @transition/move
+            @transition/shared_element
         </item>
-        <item name="android:windowSharedElementExitTransition" tools:ignore="NewApi">
-            @transition/move
-        </item>
+        <!--<item name="android:windowSharedElementExitTransition" tools:ignore="NewApi">-->
+        <!--@transition/shared_element-->
+        <!--</item>-->
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -22,11 +22,31 @@
         <item name="android:statusBarColor" tools:ignore="NewApi">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.NoActionBar.TranslucentStatusBar"></style>
+    <style name="AppTheme.NoActionBar.TranslucentStatusBar">
+
+    </style>
 
     <style name="AppTheme.Translucent" parent="AppTheme.NoActionBar.TranslucentStatusBar">
         <item name="android:windowBackground">@color/windowBackgroundTranslucent</item>
         <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="AppTheme.Main" parent="AppTheme.NoActionBar">
+        <item name="android:windowExitTransition" tools:ignore="NewApi">
+            @transition/activity_exit
+        </item>
+        <!--<item name="android:windowReenterTransition" tools:ignore="NewApi">-->
+        <!--@transition/activity_reenter-->
+        <!--</item>-->
+    </style>
+
+    <style name="AppTheme.Character" parent="AppTheme.NoActionBar.TranslucentStatusBar">
+        <item name="android:windowEnterTransition" tools:ignore="NewApi">
+            @transition/activity_enter
+        </item>
+        <!--<item name="android:windowReturnTransition" tools:ignore="NewApi">-->
+        <!--@transition/activity_return-->
+        <!--</item>-->
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
