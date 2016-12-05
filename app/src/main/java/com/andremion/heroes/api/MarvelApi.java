@@ -24,7 +24,7 @@ import retrofit2.http.Query;
 
 public class MarvelApi {
 
-    public static final int MAX_FETCH_LIMIT = 20;
+    public static final int MAX_FETCH_LIMIT = 100;
 
     private static final String BASE_URL = "http://gateway.marvel.com/v1/public/";
     private static MarvelApi sMarvelApi;
