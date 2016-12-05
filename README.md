@@ -12,7 +12,7 @@
 Android app built with [MVP](http://antonioleiva.com/mvp-android/) architectural approach and uses [Marvel Comics API](https://developer.marvel.com) that allows developers everywhere to access information about Marvel's vast library of comics.
 
 ![Preview](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/preview.gif)
-![Home](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/home-github.png)![Search](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/search-github.png)![Detail](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/detail-github.png)![Widget](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/widget-github.png)
+![Widget](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/art/widget-github.png)
 
 [![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.andremion.heroes)
 
