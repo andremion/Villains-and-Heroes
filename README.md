@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/andremion/Villains-and-Heroes.svg?branch=master)](https://travis-ci.org/andremion/Villains-and-Heroes)
 [![codecov](https://codecov.io/gh/andremion/Villains-and-Heroes/branch/master/graph/badge.svg)](https://codecov.io/gh/andremion/Villains-and-Heroes)
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Villains--&--Heroes-green.svg?style=true)](https://android-arsenal.com/details/3/4606)
 [![Awesome Android #22](https://img.shields.io/badge/Awesome%20Android-%2322-green.svg?style=true)](https://android.libhunt.com/newsletter/22)
 
 ![Icon](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/app/src/main/res/mipmap-hdpi/ic_launcher.png)
