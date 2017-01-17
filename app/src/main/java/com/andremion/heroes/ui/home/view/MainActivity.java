@@ -16,15 +16,11 @@
 
 package com.andremion.heroes.ui.home.view;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -52,10 +48,7 @@ public class MainActivity extends AppCompatActivity
         CharacterAdapter.OnItemClickListener<CharacterVO, CharacterAdapter.ViewHolder, ItemListCharacterBinding>,
         CharacterAdapter.OnLoadListener {
 
-    private static final String KEY_INITIAL_INFO_SHOWN = MainActivity.class.getSimpleName() + ".INITIAL_INFO_SHOWN";
-
     private ActivityMainBinding mBinding;
-    private SharedPreferences mPreferences;
     private CharacterAdapter mCharacterAdapter;
     private MainPresenter mPresenter;
 
@@ -67,8 +60,6 @@ public class MainActivity extends AppCompatActivity
         mBinding.recycler.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recycler.setHasFixedSize(true);
         mBinding.recycler.setAdapter(mCharacterAdapter = new CharacterAdapter(R.layout.item_list_character, this, this));
-
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (savedInstanceState == null) {
             mPresenter = new MainPresenter(MarvelApi.getInstance());
@@ -115,36 +106,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoadMore(int offset) {
         mPresenter.loadCharacters(offset);
-    }
-
-    @Override
-    public boolean showInfoDialog() {
-
-        if (!mPreferences.getBoolean(KEY_INITIAL_INFO_SHOWN, false)) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.app_name)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setMessage(R.string.initial_info)
-                    .setCancelable(false)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mPreferences.edit().putBoolean(KEY_INITIAL_INFO_SHOWN, true).apply();
-                            mPresenter.loadCharacters(0);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
-            builder.create().show();
-            return true;
-        }
-
-        return false;
     }
 
     @Override

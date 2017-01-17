@@ -92,7 +92,6 @@ public class MainPresenterTest {
         mPresenter.initScreen();
 
         InOrder inOrder = inOrder(mView);
-        inOrder.verify(mView).showInfoDialog();
         inOrder.verify(mView).showProgress();
 
         verify(mMarvelApi).listCharacters(eq(OFFSET), mListCharactersCallback.capture());
@@ -125,7 +124,6 @@ public class MainPresenterTest {
         mPresenter.initScreen();
 
         InOrder inOrder = inOrder(mView);
-        inOrder.verify(mView).showInfoDialog();
         inOrder.verify(mView).showProgress();
 
         verify(mMarvelApi).listCharacters(eq(OFFSET), mListCharactersCallback.capture());
@@ -137,7 +135,6 @@ public class MainPresenterTest {
 
         mPresenter.initScreen();
 
-        inOrder.verify(mView).showInfoDialog();
         inOrder.verify(mView).showResult(ENTRIES);
         inOrder.verify(mView).showAttribution(ATTRIBUTION);
         inOrder.verify(mView).stopProgress(HAS_MORE);
@@ -164,7 +161,6 @@ public class MainPresenterTest {
         mPresenter.initScreen();
 
         InOrder inOrder = inOrder(mView);
-        inOrder.verify(mView).showInfoDialog();
         inOrder.verify(mView).showProgress();
 
         mPresenter.detachView();
@@ -186,7 +182,6 @@ public class MainPresenterTest {
         mPresenter.initScreen();
 
         InOrder inOrder = inOrder(mView);
-        inOrder.verify(mView).showInfoDialog();
         inOrder.verify(mView).showProgress();
 
         verify(mMarvelApi).listCharacters(eq(OFFSET), mListCharactersCallback.capture());
@@ -207,7 +202,6 @@ public class MainPresenterTest {
         mPresenter.initScreen();
 
         InOrder inOrder = inOrder(mView);
-        inOrder.verify(mView).showInfoDialog();
         inOrder.verify(mView).showProgress();
 
         mPresenter.detachView();
