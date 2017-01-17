@@ -44,14 +44,12 @@ public class MainPresenter extends AbsPresenter<MainContract.View> implements Ma
 
     @Override
     public void initScreen() {
-        if (!mView.showInfoDialog()) {
-            if (mEntries.isEmpty()) {
-                loadCharacters(0);
-            } else {
-                mView.showResult(mEntries);
-                mView.showAttribution(mAttribution);
-                mView.stopProgress(mHasMore);
-            }
+        if (mEntries.isEmpty()) {
+            loadCharacters(0);
+        } else {
+            mView.showResult(mEntries);
+            mView.showAttribution(mAttribution);
+            mView.stopProgress(mHasMore);
         }
     }
 

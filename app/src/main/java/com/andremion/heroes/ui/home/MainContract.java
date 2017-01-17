@@ -26,8 +26,6 @@ public interface MainContract {
 
     interface View {
 
-        boolean showInfoDialog();
-
         void showProgress();
 
         void stopProgress(boolean hasMore);
