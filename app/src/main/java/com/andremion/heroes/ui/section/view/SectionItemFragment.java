@@ -70,18 +70,18 @@ public class SectionItemFragment extends Fragment {
         binding.setImageListener(new ImageLoadingListener() {
             @Override
             public void onSuccess() {
-                startPostponedEnterTransition();
+                startActivityPostponedEnterTransition();
             }
 
             @Override
             public void onFailed(@NonNull Exception e) {
-                startPostponedEnterTransition();
+                startActivityPostponedEnterTransition();
             }
         });
         return binding.getRoot();
     }
 
-    private void startPostponedEnterTransition() {
+    private void startActivityPostponedEnterTransition() {
         if (getActivity() != null) {
             getActivity().supportStartPostponedEnterTransition();
         }
