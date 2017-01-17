@@ -1,7 +1,6 @@
 <resources>
     <!--Fetch-->
     <string name="fetching_data">Fetching data…</string>
-    <string name="initial_info">This app fetches data provided by Marvel on Internet. Standard charges may apply on mobile network.</string>
     <string name="connection_error">Oops! Something went wrong. Check your Internet connection and try again.</string>
     <string name="server_error">Oops! Server went wrong. We will try again later.</string>
     <!--General-->
