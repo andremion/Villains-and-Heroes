@@ -34,10 +34,11 @@ public class SectionAdapter extends ArrayAdapter<SectionVO, SectionAdapter.ViewH
 
     public SectionAdapter(Context context, @SectionVO.Type int type, OnItemClickListener listener) {
         super(listener);
-        mImageTransitionName = context.getString(R.string.transition_section_image) + type;
+        mImageTransitionName = context.getString(R.string.transition_section_image);
         mType = type;
     }
 
+    @SectionVO.Type
     public int getType() {
         return mType;
     }
@@ -52,7 +53,7 @@ public class SectionAdapter extends ArrayAdapter<SectionVO, SectionAdapter.ViewH
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mBinding.setVariable(BR.section, getItem(position));
-        holder.mBinding.setVariable(BR.imageTransition, mImageTransitionName + position);
+        holder.mBinding.setVariable(BR.imageTransition, mImageTransitionName + mType + position);
         holder.mBinding.executePendingBindings();
     }
 

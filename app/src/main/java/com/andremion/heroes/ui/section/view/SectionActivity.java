@@ -22,8 +22,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -34,10 +32,10 @@ import com.andremion.heroes.api.data.SectionVO;
 import com.andremion.heroes.databinding.ActivitySectionBinding;
 import com.andremion.heroes.ui.section.SectionContract;
 import com.andremion.heroes.ui.section.SectionPresenter;
+import com.andremion.heroes.ui.util.PagerSharedElementCallback;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 
 public class SectionActivity extends AppCompatActivity implements SectionContract.View {
@@ -47,39 +45,6 @@ public class SectionActivity extends AppCompatActivity implements SectionContrac
     private static final String EXTRA_POSITION = SectionActivity.class.getPackage().getName() + ".extra.POSITION";
     private static final String EXTRA_TYPE = SectionActivity.class.getPackage().getName() + ".extra.TYPE";
     public static final int EXTRA_NOT_FOUND = -1;
-
-    private final SharedElementCallback mSharedElementCallback = new SharedElementCallback() {
-        @Override
-        public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-            View sharedElement = findSharedElement();
-            if (sharedElement != null) {
-                names.clear();
-                names.add(ViewCompat.getTransitionName(sharedElement));
-                sharedElements.clear();
-                sharedElements.put(ViewCompat.getTransitionName(sharedElement), sharedElement);
-            }
-        }
-
-        private View findSharedElement() {
-            if (mAdapter == null) {
-                return null;
-            }
-            Fragment fragment = mAdapter.getFragment(mViewPager.getCurrentItem());
-            if (fragment == null) {
-                return null;
-            }
-            View view = fragment.getView();
-            if (view == null) {
-                return null;
-            }
-            return view.findViewById(R.id.image);
-        }
-    };
-
-    private ViewPager mViewPager;
-    private SectionPagerAdapter mAdapter;
-    private SectionPresenter mPresenter;
-    private int mType;
 
     public static void start(Activity activity, @SectionVO.Type int type, View heroView, String attribution, List<SectionVO> entries, int position) {
 
@@ -109,10 +74,20 @@ public class SectionActivity extends AppCompatActivity implements SectionContrac
         return EXTRA_NOT_FOUND;
     }
 
+    private ViewPager mViewPager;
+    private SectionPresenter mPresenter;
+    private int mType;
+    private PagerSharedElementCallback mSharedElementCallback;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivitySectionBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_section);
+
+        // Postpone transition until the image of ViewPager's initial item is loaded
+        supportPostponeEnterTransition();
+        setEnterSharedElementCallback(mSharedElementCallback = new PagerSharedElementCallback());
+
         mViewPager = (ViewPager) findViewById(R.id.pager);
 
         mType = getIntent().getExtras().getInt(EXTRA_TYPE);
@@ -131,14 +106,18 @@ public class SectionActivity extends AppCompatActivity implements SectionContrac
 
         binding.setAttribution(attribution);
         binding.setPresenter(mPresenter);
-
-        // Postpone transition until section thumbnail is loaded by image loader.
-        supportPostponeEnterTransition();
     }
 
     @Override
-    public void onBackPressed() {
-        close();
+    public void finish() {
+        setResult();
+        super.finish();
+    }
+
+    @Override
+    public void finishAfterTransition() {
+        setResult();
+        super.finishAfterTransition();
     }
 
     @Override
@@ -154,21 +133,23 @@ public class SectionActivity extends AppCompatActivity implements SectionContrac
 
     @Override
     public void showItems(List<SectionVO> entries, int position) {
-        mViewPager.setAdapter(mAdapter = new SectionPagerAdapter(getSupportFragmentManager(), mType, entries));
+        SectionPagerAdapter adapter = new SectionPagerAdapter(this, mType, entries, mSharedElementCallback);
+        adapter.setInitialPosition(position);
+        mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(position, false);
     }
 
     @Override
     public void close() {
-        setResultAndFinish();
+        super.onBackPressed();
     }
 
-    private void setResultAndFinish() {
+    private void setResult() {
+        int position = mViewPager.getCurrentItem();
         Intent data = new Intent();
         data.putExtra(EXTRA_TYPE, mType);
-        data.putExtra(EXTRA_POSITION, mViewPager.getCurrentItem());
+        data.putExtra(EXTRA_POSITION, position);
         setResult(RESULT_OK, data);
-        setEnterSharedElementCallback(mSharedElementCallback);
-        supportFinishAfterTransition();
     }
+
 }

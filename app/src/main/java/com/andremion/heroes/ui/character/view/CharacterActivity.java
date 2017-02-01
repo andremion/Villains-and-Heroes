@@ -50,6 +50,7 @@ import com.andremion.heroes.ui.character.CharacterContract;
 import com.andremion.heroes.ui.character.CharacterPresenter;
 import com.andremion.heroes.ui.search.view.SearchActivity;
 import com.andremion.heroes.ui.section.view.SectionActivity;
+import com.andremion.heroes.ui.util.PagerSharedElementCallback;
 
 import java.util.List;
 
@@ -83,6 +84,7 @@ public class CharacterActivity extends AppCompatActivity implements CharacterCon
 
     private ActivityCharacterBinding mBinding;
     private CharacterPresenter mPresenter;
+    private PagerSharedElementCallback mSharedElementCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +160,7 @@ public class CharacterActivity extends AppCompatActivity implements CharacterCon
     public void onActivityReenter(int resultCode, Intent data) {
 
         int type = SectionActivity.getType(resultCode, data);
-        int position = SectionActivity.getPosition(resultCode, data);
+        final int position = SectionActivity.getPosition(resultCode, data);
 
         final RecyclerView recyclerView;
         switch (type) {
@@ -178,23 +180,36 @@ public class CharacterActivity extends AppCompatActivity implements CharacterCon
                 recyclerView = null;
         }
 
-        if (position != SectionActivity.EXTRA_NOT_FOUND && recyclerView != null
-                && recyclerView.getAdapter().getItemCount() > 0
-                && recyclerView.findViewHolderForAdapterPosition(position) == null) {
-
-            recyclerView.scrollToPosition(position);
-
-            supportPostponeEnterTransition();
-
-            recyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                @Override
-                public boolean onPreDraw() {
-                    recyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
-                    supportStartPostponedEnterTransition();
-                    return true;
-                }
-            });
+        if (recyclerView == null) {
+            return;
         }
+
+        if (position != SectionActivity.EXTRA_NOT_FOUND) {
+            recyclerView.scrollToPosition(position);
+        }
+
+        mSharedElementCallback = new PagerSharedElementCallback();
+        setExitSharedElementCallback(mSharedElementCallback);
+
+        //noinspection ConstantConditions
+        supportPostponeEnterTransition();
+        recyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                recyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
+                if (holder instanceof SectionAdapter.ViewHolder) {
+                    SectionAdapter.ViewHolder mediaViewHolder = (SectionAdapter.ViewHolder) holder;
+                    // TODO: 01/02/2017 Change findViewById(R.id.image) for a view reference
+                    mSharedElementCallback.setSharedElementViews(mediaViewHolder.itemView.findViewById(R.id.image));
+                }
+
+                supportStartPostponedEnterTransition();
+
+                return true;
+            }
+        });
 
     }
 
