@@ -6,6 +6,7 @@
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Villains--&--Heroes-green.svg?style=true)](https://android-arsenal.com/details/3/4606)
 [![Awesome Android #22](https://img.shields.io/badge/Awesome%20Android-%2322-green.svg?style=true)](https://android.libhunt.com/newsletter/22)
+[![Awesome Android #36](https://img.shields.io/badge/Awesome%20Android-%2336-green.svg?style=true)](https://android.libhunt.com/newsletter/36)
 
 ![Icon](https://raw.githubusercontent.com/andremion/Villains-and-Heroes/master/app/src/main/res/mipmap-hdpi/ic_launcher.png)
 # Villains & Heroes
