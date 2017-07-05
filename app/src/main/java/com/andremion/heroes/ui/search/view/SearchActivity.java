@@ -82,6 +82,17 @@ public class SearchActivity extends AppCompatActivity
     }
 
     @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return mPresenter;
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.detachView();
+        super.onDestroy();
+    }
+
+    @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
     }

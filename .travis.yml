@@ -5,6 +5,10 @@ jdk:
   # Prevent java.lang.UnsupportedClassVersionError: com/android/build/gradle/AppPlugin : Unsupported major.minor version 52.0
   - oraclejdk8
 
+env:
+  matrix:
+    - ANDROID_TARGET=android-25 ANDROID_ABI=armeabi-v7a
+
 android:
   components:
 
@@ -13,7 +17,7 @@ android:
     - tools
 
     # The BuildTools version used by your project
-    - build-tools-24.0.3
+    - build-tools-25.0.3
 
     # The SDK version used to compile your project
     - android-25
@@ -22,9 +26,7 @@ android:
     - extra-android-m2repository
 
     # Specify system images to run emulators during the tests
-    - sys-img-armeabi-v7a-android-15
     - sys-img-armeabi-v7a-android-25
-    - sys-img-x86-android-15
     - sys-img-x86-android-25
 
 # Caching in Gradle means that to avoid uploading the cache after every build
@@ -41,7 +43,7 @@ before_install:
 
 # Emulator Management: Create, Start and Wait
 before_script:
-  - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
+  - echo no | android create avd --force -n test -t android-25 --abi armeabi-v7a
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
