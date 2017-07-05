@@ -5,6 +5,10 @@ jdk:
   # Prevent java.lang.UnsupportedClassVersionError: com/android/build/gradle/AppPlugin : Unsupported major.minor version 52.0
   - oraclejdk8
 
+env:
+  matrix:
+    - ANDROID_TARGET=android-25 ANDROID_ABI=armeabi-v7a
+
 android:
   components:
 
