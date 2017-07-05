@@ -22,6 +22,7 @@
     <data>
 
         <import type="android.view.View"/>
+        <import type="android.text.TextUtils"/>
 
         <variable
             name="attribution"
@@ -110,7 +111,7 @@
                     android:layout_marginBottom="@dimen/text_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:text="@{!character.description.empty ? character.description : @string/unavailable_data}"
+                    android:text="@{TextUtils.isEmpty(character.description) ? @string/unavailable_data : character.description}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textIsSelectable="true"
                     tools:text="@string/unavailable_data"/>
