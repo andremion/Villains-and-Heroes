@@ -1,18 +1,19 @@
 language: android
-
-jdk:
-  # Jdk version used by your project
-  # Prevent java.lang.UnsupportedClassVersionError: com/android/build/gradle/AppPlugin : Unsupported major.minor version 52.0
-  - oraclejdk8
+jdk: oraclejdk8
+#sudo: false
 
 env:
   matrix:
-    - ANDROID_TARGET=android-25 ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-17 ANDROID_API=17 ANDROID_TAG=google_apis ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-25 ANDROID_API=25 ANDROID_TAG=google_apis ANDROID_ABI=armeabi-v7a
+  global:
+    - ADB_INSTALL_TIMEOUT=10
 
 android:
+  update_sdk: true
   components:
 
-    # Use the latest revision of Android SDK Tools
+    # Tools section appears twice on purpose as it’s required to get the newest Android SDK tools
     - platform-tools
     - tools
 
@@ -20,38 +21,42 @@ android:
     - build-tools-25.0.3
 
     # The SDK version used to compile your project
-    - android-25
+    - $ANDROID_TARGET
 
     # Additional components
     - extra-android-m2repository
 
     # Specify system images to run emulators during the tests
-    - sys-img-armeabi-v7a-android-25
-    - sys-img-x86-android-25
+    - sys-img-$ANDROID_ABI-$ANDROID_TAG-$ANDROID_API
 
-# Caching in Gradle means that to avoid uploading the cache after every build
+# Avoid uploading the cache after every build
 before_cache:
-  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
 cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
 
-# Prevent ./gradlew: Permission denied
 before_install:
+  # Prevent ./gradlew: Permission denied
   - chmod +x gradlew
+  # Install codecov
+  - pip install --user codecov
 
 # Emulator Management: Create, Start and Wait
 before_script:
-  - echo no | android create avd --force -n test -t android-25 --abi armeabi-v7a
-  - emulator -avd test -no-audio -no-window &
+  - echo no | android create avd --force --name test --target $ANDROID_TARGET --tag $ANDROID_TAG --abi $ANDROID_ABI
+  - emulator -avd test -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
 
 #Build, and run tests
 script:
-  - ./gradlew jacocoTestReport
+  - ./gradlew jacocoTestReport --continue --stacktrace
 
 #Codecov
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - codecov
