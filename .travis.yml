@@ -1,13 +1,10 @@
 language: android
 jdk: oraclejdk8
-#sudo: false
 
 env:
   matrix:
-    - ANDROID_TARGET=android-17 ANDROID_API=17 ANDROID_TAG=google_apis ANDROID_ABI=armeabi-v7a
-    - ANDROID_TARGET=android-25 ANDROID_API=25 ANDROID_TAG=google_apis ANDROID_ABI=armeabi-v7a
-  global:
-    - ADB_INSTALL_TIMEOUT=10
+    - ANDROID_TARGET=android-17 EMULATOR_TAG=google_apis EMULATOR_ABI=armeabi-v7a EMULATOR_API=17
+    - ANDROID_TARGET=android-23 EMULATOR_TAG=google_apis EMULATOR_ABI=armeabi-v7a EMULATOR_API=23
 
 android:
   update_sdk: true
@@ -27,7 +24,7 @@ android:
     - extra-android-m2repository
 
     # Specify system images to run emulators during the tests
-    - sys-img-$ANDROID_ABI-$ANDROID_TAG-$ANDROID_API
+    - sys-img-$EMULATOR_ABI-$EMULATOR_TAG-$EMULATOR_API
 
 # Avoid uploading the cache after every build
 before_cache:
@@ -48,7 +45,7 @@ before_install:
 
 # Emulator Management: Create, Start and Wait
 before_script:
-  - echo no | android create avd --force --name test --target $ANDROID_TARGET --tag $ANDROID_TAG --abi $ANDROID_ABI
+  - echo no | android create avd --force --name test --target $ANDROID_TARGET --tag $EMULATOR_TAG --abi $EMULATOR_ABI
   - emulator -avd test -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
